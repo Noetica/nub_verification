@@ -1,0 +1,73 @@
+{
+  "run_id": "20261026T130500Z-verification-run",
+  "timestamp_utc": "2026-10-26T13:05:00Z",
+  "journey": "N/A",
+  "environment": "contoso",
+  "persona": "admin",
+  "headless": false,
+  "deployed_builds": {
+    "nub_web_reportmanager": "unknown — /api/version not checked in this run"
+  },
+  "checks": [
+    {
+      "name": "Smoke: login + dashboard renders 12 report cards + no console errors",
+      "result": "PASS",
+      "evidence_path": "TestResults/e2e-smoke.trx"
+    },
+    {
+      "name": "AllReportCards_NavigateToTheirReports — 12 cards reach their reports",
+      "result": "PASS",
+      "evidence_path": "TestResults/e2e-timing.log (lines 29-140)"
+    },
+    {
+      "name": "AllReports_ListPickerOpensPopulatedAndCloses — picker on all 12 reports",
+      "result": "PASS",
+      "evidence_path": "TestResults/e2e-timing.log (lines 141-262)"
+    },
+    {
+      "name": "DataDrivenReports_AcceptInputsAndRender — Daily Outbound Interval grid populated",
+      "result": "PASS",
+      "evidence_path": "TestResults/e2e-timing.log (line 276: grid populated in 2.1s)"
+    },
+    {
+      "name": "DataDrivenReports_AcceptInputsAndRender — Data Import grid does not populate",
+      "result": "FAIL",
+      "evidence_path": "TestResults/failures/20261026-130903993-report-inputs/trace.zip",
+      "reason": "After View Report, .p-datatable-table-container never visible within 30s timeout"
+    },
+    {
+      "name": "Export_DailyOutboundInterval_OffersPdfAndExcel",
+      "result": "FAIL",
+      "evidence_path": "TestResults/failures/20261026-130914470-export-options/trace.zip",
+      "reason": "Cascade: shared session stuck on /dataimportreport after Data Import failure"
+    },
+    {
+      "name": "Export_DailyOutboundInterval_PdfDownloads",
+      "result": "FAIL",
+      "evidence_path": "TestResults/failures/20261026-130919601-export-pdf/trace.zip",
+      "reason": "Cascade: shared session stuck on /dataimportreport"
+    },
+    {
+      "name": "Export_DailyOutboundInterval_ExcelDownloads",
+      "result": "FAIL",
+      "evidence_path": "TestResults/failures/20261026-130909317-export-excel/trace.zip",
+      "reason": "Cascade: shared session stuck on /dataimportreport"
+    },
+    {
+      "name": "OpenReportThenLogout_EndsSession",
+      "result": "FAIL",
+      "evidence_path": "TestResults/failures/20261026-130924741-logout-flow/trace.zip",
+      "reason": "Cascade: shared session stuck on /dataimportreport"
+    }
+  ],
+  "summary_counts": {
+    "pass": 4,
+    "fail": 5,
+    "blocked": 0,
+    "not_run": 0,
+    "skipped": 15,
+    "total_in_trx": 22
+  },
+  "proposed_verdict": "FAIL",
+  "cleanup_status": "Test artifacts retained in TestResults/. No records created in the tenant (read-only checks only)."
+}

@@ -1,7 +1,12 @@
 ---
-status: draft
+status: verified
 owner: Sandra (rewrite in your own words) — currently drafted by John
-last_reviewed: 2026-10-23
+last_reviewed: 2026-10-26
+verified_on: 2026-10-26 (Contoso dev, admin persona)
+verification_result: PASS for Daily Outbound Interval — date 2025-12-29, list
+  `sandra > EMAIL > list01`, View Report, grid populated in 2.1s, no console errors.
+  The Data Import report (next in the batch) failed to populate its grid, which
+  cascaded through the remaining tests. See results/20261026T130500Z-verification-run/.
 ---
 
 # Daily Outbound Interval
