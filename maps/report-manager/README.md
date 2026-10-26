@@ -45,22 +45,21 @@ behavior. It then uses exactly four H2 sections in this order.
 Keep implementation details out of the map. Name only user paths, stable handles,
 required state, commands, and observable proof.
 
-## Features
+| Report | Status | Route | Tests |
+|--------|--------|-------|-------|
+| Daily Outbound Interval | VERIFIED (2026-10-26) | `dailyoutboundintervalreport` | Grid populated 2.1s, no errors |
+| Outward Outcome | stub (ENG-644 regression) | `outboundoutcomereport` | Pending |
+| Data Import | stub (cascading failure observed) | `dataimportreport` | Grid did not populate (30s timeout) |
+| Data Penetration | stub | `datapenetrationreport` | Pending |
+| Monthly Outbound Interval | stub | `monthlyoutboundintervalreport` | Pending |
+| Outbound Calls Data | stub | `outboundcallsdatareport` | Pending |
+| Agent Breaks | stub | `agentbreaksreport` | Pending |
+| Email SMS Data | stub | `emailsmsdatareport` | Pending |
+| Daily Agent Productivity | stub | `dailyagentproductivityreport` | Pending |
+| Campaign Performance | stub | `campaignperformancereport` | Pending |
+| Campaign Performance by Hour | stub | `campaignperformancebyhourreport` | Pending |
+| Data Penetration Extended | stub | `datapenetrationextendedreport` | Pending |
 
-- [Daily Outbound Interval](./daily-outbound-interval.md) — View, Excel Check, Download.
-  The first report for the pilot (ENG-645, first milestone).
-- [Outbound Outcome](./outbound-outcome.md) — View, Excel Check, Download. ENG-644's
-  regression: the bounded SQL adapter must be exercised with real data, not substituted.
-- [Data Import](./data-import.md)
-- [Data Penetration](./data-penetration.md)
-- [Monthly Outbound Interval](./monthly-outbound-interval.md)
-- [Outbound Calls Data](./outbound-calls-data.md)
-- [Agent Breaks](./agent-breaks.md)
-- [Email SMS Data](./email-sms-data.md)
-- [Daily Agent Productivity](./daily-agent-productivity.md)
-- [Campaign Performance](./campaign-performance.md)
-- [Campaign Performance by Hour](./campaign-performance-by-hour.md)
-- [Data Penetration Extended](./data-penetration-extended.md)
-
-(Abandoned Calls is intentionally excluded — its dashboard card is commented out in
-`ContentView.vue` even though the route still exists. See `ReportCatalog.cs`.)
+All 12 dashboard reports have feature-map stubs. Daily Outbound Interval is the
+first verified; Data Import is the first failure (grid did not populate in the
+shared session, cascading through the remaining tests).
