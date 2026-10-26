@@ -4,6 +4,10 @@ Three concrete problems in `nub_web_reportmanager`'s verification workflow. All
 line references are to `.github/workflows/e2e-verification.yml` (cloned at
 `rpm_clone/`). The same skip-gate pattern appears in `e2e-smoke.yml`.
 
+**Status:** All three fixes applied in branch `fix/skip-gate-video-trace` and
+opened as PR
+[https://github.com/Noetica/nub_web_reportmanager/pull/267](https://github.com/Noetica/nub_web_reportmanager/pull/267).
+
 ## Problem 1: Skip-gate reports success (the core issue)
 
 **Where:** `e2e-verification.yml` lines 97-102.
