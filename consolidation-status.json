@@ -364,8 +364,8 @@
     ],
     "resume_order": [
       "Verify schema/calling-code mappings",
-      "Implement the four agreed read tools and supported Doctor integration",
       "Finish grill and obtain final spec approval",
+      "Implement the four agreed read tools and supported Doctor integration",
       "Review/configure the existing ENG-645 PR under its own workflow",
       "Run Contoso checks with evidence",
       "Get Kim confirmation and perform final Fabrikam acceptance"

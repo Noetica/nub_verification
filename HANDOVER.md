@@ -38,17 +38,19 @@ and new TEFT tooling are outside this implementation.
    Read the model repository's canonical `spec-grill` instructions for spec work.
 2. Resolve OQ-3 from actual schema and owning code: identifiers, complete attempt
    history, state/recycle semantics and outcome mapping. The README's candidate
-   `Phoenix_*` tables are not an approved query design. Then implement only the four
-   parameterized read tools. A matching Contoso read-only connection is also missing.
-3. Preserve the verified CODEOWNERS routing. GitHub returned no branch errors after
+   `Phoenix_*` tables are not an approved query design. A matching Contoso read-only
+   connection is also missing.
+3. Finish spec-grill and obtain final scope approval before implementing the read tools
+   or Doctor integration. Formal `implement ENG-824` runs from the owning code repo
+   against a published approved spec; it has not been evidenced as started through the
+   golden path. Existing PoC code predates that gate.
+4. Preserve the verified CODEOWNERS routing. GitHub returned no branch errors after
    push for `KimConstantine`, `sandramaced`, `HeyGirardi` and `Sarah461-sys`;
    no permissions changed. Recheck if account access or ownership rules change.
-4. Complete Doctor's exact-build checks and Sarah integration using her current
+5. Implement only the four parameterized read tools. Complete Doctor's exact-build
+   checks and Sarah integration using her current
    `-SettingsFile` / supported `-Only` signature and actual result contract. The current
    skeleton deliberately exits 2 for blockage; script existence is not readiness.
-5. Finish spec-grill and obtain final scope approval. Formal `implement ENG-824`
-   runs from the owning code repo against a published approved spec; it has not been
-   evidenced as started through the golden path. Existing PoC code predates that gate.
 6. In ENG-645, review PR #267 and resolve its runner/vault/URL prerequisites. Existing
    preflight failure is evidence of visible missing configuration, not a passing suite
    or proof that video/success traces are retained. Keep its code in the product repo.
