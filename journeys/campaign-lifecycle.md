@@ -1,92 +1,73 @@
 ---
 name: verify-journey-campaign-lifecycle
-description: J1 — Campaign Lifecycle: import, queue, dial, record outcome, check history and report.
+status: draft
+owner: John Girardi
+reviewers: [Kim, Sandra]
+last_reviewed: 2026-10-26
+expected_values_status: pending Kim agreement
+crosses: [Campaign Manager, Dialler, Voice Platform, Reports API, Report Manager]
 ---
 
 # Journey: Campaign Lifecycle (J1)
 
 ## What it proves
 
-A small file of records with distinct intended outcomes ends in the attempt history,
-final states, retries, and report totals agreed before the run.
+A small set of synthetic records ends with the agreed calls, retries, record history,
+final states and report totals. This is a draft for Sandra to review; it has not been
+run and accepted as a complete journey.
 
 ## Before you start
 
-- **Tenant:** Fabrikam (or Contoso for local PoC without telephony).
-- **Reserved resources:** one campaign, one list, one agent (Kim names these on the
-  kickoff; see `environments/fabrikam.md`).
-- **Data file:** `TestData/j1-records.csv` — four records, each with a distinct intended
-  outcome (live answer, busy, no answer, voicemail). The agent uses the real Campaign
-  Manager import, never SQL that manufactures the result.
-- **Agent:** one simulated or real agent logged in and ready (the TEFT runner's simulated
-  agent plays this today; Stream A's SAIL agent-side layer can take over when it lands).
+- Run development checks on Contoso first; final evidence and verification use Fabrikam.
+- Kim names the reserved campaign, list, agent and telephone numbers and agrees the
+  intended result for each synthetic record. Those details are still pending.
+- Prepare and agree the small import file. No agreed file is supplied by this draft.
+- Confirm that the intended builds are deployed and the environment is ready.
+- A person can take the live-answer call with today's tools. Busy, unanswered,
+  voicemail and unattended-agent legs need the corresponding Stream A support;
+  keep those legs visibly blocked until it exists.
 
 ## Steps
 
-1. Import the data file into the reserved campaign. Every record has an intended outcome
-   chosen by its number (per TEFT's number-range routing, once Stream A delivers it; for
-   the PoC, the outcomes are pre-seeded in the data).
-2. Wait for the queue to build. The database shows every record queued and none dialled.
-3. Let the dialler call them. TEFT answers each call the way the number says: live answer,
-   busy, no answer, voicemail. An agent is logged in through the harness.
-4. One record is not answered first time, becomes eligible again after the configured
-   recycling interval, then completes.
-5. Outcomes and recycling. The database shows the attempt history and final state of
-   every record.
-6. Daily Outbound Interval -> maps/report-manager/daily-outbound-interval.md, expecting
-   the totals below.
+1. Import the agreed records into the reserved list through the product.
+2. Check that the selected records are queued and have not already been dialled.
+3. Let the dialler call the live-answer record and have the reserved agent take it.
+4. When Stream A supports them, exercise the agreed busy, unanswered and voicemail
+   cases. Until then, mark those steps blocked rather than substituting outcomes.
+5. Retry the agreed record after the campaign's agreed delay, when that leg is supported.
+6. Check the selected records' history and final states, then compare the report with
+   the totals agreed before the run.
 
 ## Check
 
-(Expected results written before any run, from the product rules, not from what the
-system returns. Sandra's numbers.)
+The following expectations are awaiting Kim's agreement. They are not Sandra's
+approved values and must not be filled in from what the application happens to return.
 
-| Record | Expected outcome | Expected attempts | Expected final state |
-|--------|-----------------|-------------------|---------------------|
-| 1 | live answer | 1 | completed |
-| 2 | busy | 1 | retry-eligible after busy delay |
-| 3 | no answer | 2 (one retry) | completed |
-| 4 | voicemail | 1 | completed |
+| Record role | Expected calls/attempts | Expected final state/retry | Seen in |
+| --- | --- | --- | --- |
+| Live-answer record | Kim to agree | Kim to agree | Call evidence, agent screen, record history |
+| Busy record — needs Stream A | Kim to agree | Kim to agree | Call evidence and record history |
+| Unanswered/retry record — needs Stream A | Kim to agree | Kim to agree | Attempt history and final state |
+| Voicemail record — needs Stream A | Kim to agree | Kim to agree | Call evidence and record history |
+| Report totals | Kim to agree | Kim to agree | Daily Outbound Interval and its workbook |
 
-- Each record was called the expected number of times.
-- No call reached the agent except record 1 (the live answer).
-- The busy and no-answer records are due again after the campaign's configured delays.
-- Each record's history shows its attempt(s) with the correct outcome code.
-- The Daily Outbound Interval report shows the expected totals (see the feature map
-  entry for the agreed values).
-
-Each check says where it is seen: the call timeline (TEFT results), the agent's screen
-(Campaign Manager), the record's history (database), and the report (Report Manager).
+The four named database-read tools needed for the record checks are agreed scope but
+not implemented. Their checks remain blocked. Record Kim's agreement and date before
+accepting final evidence; Sandra reviews the wording on her return.
 
 ## Evidence to keep
 
-- The run's result page (see `results/README.md`).
-- Each call's timeline (from TEFT's results API).
-- Each record's history (from the read-only database queries in `tools/db/`).
-- The Daily Outbound Interval report, on screen and in the workbook.
-- Deployed build identities for: Campaign Manager, the dialler, the voice platform,
-  Reports API, Report Manager.
-- One run ID that links the records, calls, and evidence.
+Keep one readable result page with pass, fail, blocked or not run for every required
+check, including the legs that could not run. Identify the environment and all relevant
+deployed builds, the journey/expected-values revision, tool versions, UTC time and run ID.
+Link the call evidence, record observations, report and workbook, plus a screen recording
+and trace for every browser step on success and failure. Contoso results are preliminary;
+accepted final evidence must come from Fabrikam.
 
 ## Clean up
 
-- Take the four records out of the campaign.
-- Log the agent out.
-- Release the reserved campaign, list, and agent resources.
-- Do not reset the entire tenant; remove only what this run created.
+Remove only the records created for this run through supported product operations,
+log out its agent and release its reserved resources. Retain the evidence. Report
+cleanup separately and never reset the shared tenant.
 
-## Status
-
-- **Legs that need Stream A:** busy, no answer, answering machine (voicemail), number-range
-  routing. Mark these *needs stream A* and link Stream A's outcome catalogue once published.
-- **Legs that work today:** live answer (someone takes the predictive call), queue build
-  (database check), report totals (Report Manager).
-- **The unattended version** (simulated agent plays the agent side on every call) needs
-  Stream A's A6. Mark *needs stream A*.
-
-## Next actions
-
-1. Draft this journey with Kim: agree the expected results and the data file.
-2. Mark the Stream A-dependent legs and link its outcome catalogue.
-3. Write the database read queries (`tools/db/`) that this journey's checks need.
-4. When Stream A lands, run end to end on Fabrikam.
+Crosses: Campaign Manager, Dialler, Voice Platform, Reports API and Report Manager.

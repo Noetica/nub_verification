@@ -1,116 +1,39 @@
-# Fix guide: escalation gaps in e2e-verification.yml
+# Report Manager skip-gate and evidence work
 
-Three concrete problems in `nub_web_reportmanager`'s verification workflow. All
-line references are to `.github/workflows/e2e-verification.yml` (cloned at
-`rpm_clone/`). The same skip-gate pattern appears in `e2e-smoke.yml`.
+Snapshot: 26 Oct 2026. [PR #267](https://github.com/Noetica/nub_web_reportmanager/pull/267)
+is **OPEN**, at `8d55c0073d8ae332af4476fe879b5c3328b9b00a`; it has not landed on main.
+This is the existing ENG-645 product-harness work, not a second implementation in
+`nub_verification`. The merged verification-repo PR #1 only documented this PR.
 
-**Status:** All three fixes applied in branch `fix/skip-gate-video-trace` and
-opened as PR
-[https://github.com/Noetica/nub_web_reportmanager/pull/267](https://github.com/Noetica/nub_web_reportmanager/pull/267).
+## What the branch implements
 
-## Problem 1: Skip-gate reports success (the core issue)
+- `.github/workflows/e2e-smoke.yml` and `e2e-verification.yml` remove the job's
+  skip-on-missing-variables gate and add an explicit failing preflight. It requires
+  `E2E_RUNS_ON`, `E2E_KEYVAULT_NAME`, `E2E_DEV_BASE_URL` and `E2E_DEV_LOGIN_URL`.
+- Both workflows upload artifacts on `always()`, instead of failure only.
+- `tests/ReportManager.E2E/Fixtures/AuthFixture.cs` sets
+  `BrowserNewContextOptions.RecordVideoDir` when creating the authenticated context.
+- `tests/ReportManager.E2E/Support/PageObservation.cs` saves successful traces under
+  `TestResults/traces/`, preserving the failure-artifact path separately.
 
-**Where:** `e2e-verification.yml` lines 97-102.
+Use the actual branch code and owning repository guidance; the earlier illustrative
+`RecordVideo` property and guessed fixture APIs are not implementation instructions.
 
-```yaml
-  verification:
-    needs: ensure-runner
-    if: ${{ vars.E2E_RUNS_ON != '' && vars.E2E_KEYVAULT_NAME != '' }}
-```
+## What has been demonstrated
 
-When the variables are unset, GitHub marks the job **skipped** (neutral). A skipped
-job is not a failing job — the workflow reports **success** with zero evidence. The
-README (lines 130-132) admits this: "Both workflows skip cleanly (neutral, not red)
-until the repo Variables are set."
+The PR's [smoke workflow run](https://github.com/Noetica/nub_web_reportmanager/actions/runs/40335002616)
+failed because all four required variables were missing. That proves visible
+configuration blockage in this run; it does not demonstrate a successful browser
+execution, video finalization, retained pass traces or activation on main.
 
-**Fix:** Remove the `if:` gate from the job. Replace it with an unconditional
-pre-flight step that checks the variables and **fails** (red, not skip-green) when
-they are missing:
+The separate local Contoso baseline predates final verification and failed overall.
+Its observed grid is not proof of agreed totals, exports or final Fabrikam acceptance.
 
-```yaml
-  verification:
-    needs: ensure-runner
-    # No if: gate — the job always runs so missing config is a hard failure.
-    runs-on: ${{ vars.E2E_RUNS_ON || 'windows-latest' }}
-    steps:
-      - name: Check E2E prerequisites
-        if: always()
-        shell: pwsh
-        run: |
-          $missing = @()
-          if (-not "${{ vars.E2E_RUNS_ON }}")       { $missing += "E2E_RUNS_ON" }
-          if (-not "${{ vars.E2E_KEYVAULT_NAME }}") { $missing += "E2E_KEYVAULT_NAME" }
-          if (-not "${{ vars.E2E_DEV_BASE_URL }}")  { $missing += "E2E_DEV_BASE_URL" }
-          if (-not "${{ vars.E2E_DEV_LOGIN_URL }}") { $missing += "E2E_DEV_LOGIN_URL" }
-          if ($missing.Count -gt 0) {
-            throw "VERIFICATION BLOCKED — missing repo Variables: $($missing -join ','). A skipped run is NOT evidence of passing."
-          }
-```
+## Remaining work in ENG-645
 
-Apply the same fix to `e2e-smoke.yml` lines 117-123 for the PR gate.
-
-## Problem 2: No evidence on success (artifacts only on failure)
-
-**Where:** `e2e-verification.yml` lines 203-208.
-
-```yaml
-      - name: Upload failure artifacts
-        if: failure()
-```
-
-A passing run uploads nothing. Traces, screenshots, and test results exist only
-transiently on the runner.
-
-**Fix:** Change `if: failure()` to `if: always()`, and bump retention to 14 days:
-
-```yaml
-      - name: Upload verification artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: e2e-verification-artifacts-${{ env.E2E_ENVIRONMENT }}
-          path: tests/ReportManager.E2E/TestResults/
-          retention-days: 14
-```
-
-## Problem 3: No video recording on pass (Kim's ask, 23 Oct 2026)
-
-**Where:** `PlaywrightFixture.cs` lines 29-35 — launch options set `Headless` and
-`SlowMo` but never set `RecordVideo` on the context.
-
-And `PageObservation.cs`: tracing starts in `StartAsync` (line 89) but the trace is
-only saved to disk in `CaptureFailureArtifactsAsync` (line 128), called only from
-the catch block (line 51). So **both traces and screenshots are failure-only**.
-
-**Fix (two parts):**
-
-### Part A: Record video on every run
-
-The browser context is created in `AuthFixture.CreateAuthenticatedPageAsync()`.
-Add `RecordVideo` to the context options there:
-
-```csharp
-var context = await playwright.Chromium.NewContextAsync(new BrowserContextOptions
-{
-    // ... existing options ...
-    RecordVideo = new() { Dir = videoDir },  // add this
-});
-```
-
-where `videoDir` is wired from `E2ESettings` (e.g. `E2E__VideoDir`).
-
-### Part B: Save traces on every run
-
-Move the artifact-directory creation from `CaptureFailureArtifactsAsync` (line 135)
-to `StartAsync` so it exists before the step runs. Then in `DisposeAsync`
-(line 202-224), change the unconditional `Tracing.StopAsync` to save the trace:
-
-```csharp
-// In DisposeAsync — save the trace on success too
-await page.Context.Tracing.StopAsync(new TracingStopOptions
-{
-    Path = Path.Combine(artifactDirectory, "trace.zip")
-});
-```
-
-This keeps one trace per observed step, pass or fail.
+Resolve the approved runner, Azure/vault access and environment URL prerequisites;
+review and merge through the owning repository's normal process; run on Contoso
+before final Fabrikam verification. Demonstrate evidence for successful and failed
+browser steps, retained videos after context shutdown, exact deployed website/API
+builds, and visible skipped/blocked required coverage. Preserve current failures and
+do not expand ENG-824 into an isolation refactor or fixture-data repair.

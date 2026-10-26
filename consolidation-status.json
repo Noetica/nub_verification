@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "issue": "ENG-824",
+  "observed_at_utc": "2026-10-26T20:53:43Z",
+  "title": "One consolidated verification PoC",
+  "summary": "The PoC and a preliminary Contoso baseline exist; the full journey and final Fabrikam verification are unfinished.",
+  "snapshot_notice": "Dated audit snapshot; PR and runtime states are not updated automatically.",
+  "sources": {
+    "spec": {
+      "commit": "d3d504a20e2c536d3da94565eac3ad7059555747",
+      "status": "draft",
+      "url": "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md",
+      "grill_url": "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md"
+    },
+    "hermes": {
+      "session_id": "local-b0d496ad7076604228db7bbacda5c75b9d6c95f257bd137a954cf5b0e255ca0d",
+      "end_reason": "cli_close",
+      "outcome": "PoC implementation, baseline, product PR and spec-grill work retained; final approval had been requested, not received."
+    },
+    "codex": {
+      "commits": [
+        "d3db8f9",
+        "81bdf7d",
+        "2946d8e",
+        "d3d504a"
+      ],
+      "outcome": "Scope split, Contoso-to-Fabrikam sequence, missing-query investigation and consolidated evidence corrections retained."
+    },
+    "verification": {
+      "branch": "add-answers-artifact",
+      "source_commit": "b4ecc096b6cba259eb11da02d18c7982a63e1405",
+      "pr": "https://github.com/Noetica/nub_verification/pull/2",
+      "pr_state": "OPEN",
+      "review_decision": "CHANGES_REQUESTED",
+      "reconciliation_commit": "b6a9945b0a81141658a814be985079a13b5875ef"
+    },
+    "report_manager": {
+      "commit": "8d55c0073d8ae332af4476fe879b5c3328b9b00a",
+      "branch": "fix/skip-gate-video-trace",
+      "pr": "https://github.com/Noetica/nub_web_reportmanager/pull/267",
+      "pr_state": "OPEN",
+      "smoke": "FAIL: missing four repository variables",
+      "run": "https://github.com/Noetica/nub_web_reportmanager/actions/runs/40335002616"
+    },
+    "schema": {
+      "commit": "1e467bd733006a18e70cbf9bfae2181f200f080f",
+      "url": "https://github.com/Noetica/nub_documents/blob/1e467bd733006a18e70cbf9bfae2181f200f080f/database/schema-reference.md"
+    },
+    "merged_documentation_pr": {
+      "url": "https://github.com/Noetica/nub_verification/pull/1",
+      "merged_at": "2026-10-26T14:14:38Z"
+    }
+  },
+  "planned_points": [
+    {
+      "id": "C0",
+      "title": "Consolidate both sessions",
+      "status": "done",
+      "summary": "One scope, one current report and one shared scenario body retain the useful work from both sessions.",
+      "evidence": [
+        "DECISIONS.md",
+        "HANDOVER.md",
+        "consolidation-status.json"
+      ],
+      "next_action": "Review this snapshot; continue from the tracked handover.",
+      "owner": "John",
+      "gate": ""
+    },
+    {
+      "id": "S1",
+      "title": "Spec draft and grill",
+      "status": "in_progress",
+      "summary": "Scope and test sequence are settled; the four database reads remain included. Approval and research prerequisites are still outstanding.",
+      "evidence": [
+        "DECISIONS.md",
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md",
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md"
+      ],
+      "next_action": "Verify query mappings and finish the grill before formal implementation approval.",
+      "owner": "John",
+      "gate": "Kim confirms final fixtures; technical schema research and final scope approval remain."
+    },
+    {
+      "id": "B1",
+      "title": "Verification home",
+      "status": "in_progress",
+      "summary": "Repository, map/journey templates and result format exist; real CODEOWNERS identities and shared scenario instructions are now present.",
+      "evidence": [
+        "README.md",
+        "CODEOWNERS",
+        ".agents/skills/scenario/SKILL.md"
+      ],
+      "next_action": "Complete the planned reference-home migration and retain the normal PR review.",
+      "owner": "John; Kim and Sandra curate content",
+      "gate": ""
+    },
+    {
+      "id": "B2",
+      "title": "Make Report Manager checks real",
+      "status": "in_progress",
+      "summary": "The existing product PR adds visible missing-configuration failure and retained evidence, but it is still open and its smoke gate fails.",
+      "evidence": [
+        "tools/fix-escalation-gap.md",
+        "https://github.com/Noetica/nub_web_reportmanager/pull/267"
+      ],
+      "next_action": "In ENG-645, resolve the approved runner/vault/URL prerequisites, review the PR and prove pass/fail evidence on actual runs.",
+      "owner": "ENG-645 owner and John",
+      "gate": "Open PR; four missing variables; no successful video/trace demonstration."
+    },
+    {
+      "id": "B3",
+      "title": "Readiness check (Doctor)",
+      "status": "in_progress",
+      "summary": "The script exists and now stops on blocked checks; exact build checks and supported Sarah integration are unfinished.",
+      "evidence": [
+        "tools/doctor/fabrikam.ps1",
+        "AGENTS.md"
+      ],
+      "next_action": "Implement verified build comparison and supported stand-up result handling before driving.",
+      "owner": "John with Sarah",
+      "gate": "Build source, integration and reserved resources pending."
+    },
+    {
+      "id": "B4",
+      "title": "Four read-only journey queries",
+      "status": "todo",
+      "summary": "Agreed scope, with no scripts implemented. The previous generic table names were not grounded in the canonical schema.",
+      "evidence": [
+        "tools/db/README.md",
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md"
+      ],
+      "next_action": "Verify identifiers, joins, state meanings and attempt-history coverage, then implement only the four selected-record reads.",
+      "owner": "John",
+      "gate": "OQ-3: schema/calling-code research; matching Contoso connection source not established."
+    },
+    {
+      "id": "B5",
+      "title": "First campaign journey",
+      "status": "in_progress",
+      "summary": "A six-heading draft now marks unagreed values and future call outcomes honestly; no complete accepted run exists.",
+      "evidence": [
+        "journeys/campaign-lifecycle.md"
+      ],
+      "next_action": "Kim agrees resources, import data and expected values; Sandra reviews wording; unsupported Stream A legs remain visible.",
+      "owner": "John drafts; Kim agrees; Sandra reviews",
+      "gate": "OQ-1; database reads and relevant Stream A support."
+    },
+    {
+      "id": "B6",
+      "title": "Plain-English card/scenario entry point",
+      "status": "in_progress",
+      "summary": "The scenario workflow and Claude adapter exist; end-to-end use by Sandra or Kim has not been evidenced.",
+      "evidence": [
+        ".agents/skills/scenario/SKILL.md",
+        ".claude/commands/test.md"
+      ],
+      "next_action": "After readiness and tools work, run one supervised named-card scenario and retain its evidence.",
+      "owner": "John; Sandra/Kim handover",
+      "gate": "Supporting tools, fixtures and exact build identity pending."
+    },
+    {
+      "id": "V1",
+      "title": "Contoso baseline",
+      "status": "done",
+      "summary": "A historical smoke pass and failed verification run are recorded; this is preliminary development evidence.",
+      "evidence": [
+        "results/20261026T130500Z-verification-run/result.md",
+        "results/20261026T130500Z-verification-run/audit.md"
+      ],
+      "next_action": "Repeat the selected checks against intended builds after implementation; preserve the original failures.",
+      "owner": "John",
+      "gate": "Recorded run verdict FAIL; not final acceptance."
+    },
+    {
+      "id": "V2",
+      "title": "Fabrikam final evidence",
+      "status": "blocked",
+      "summary": "No accepted final Fabrikam result is recorded.",
+      "evidence": [
+        "environments/fabrikam.md",
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md"
+      ],
+      "next_action": "After Contoso checks and Kim confirmation, run final Fabrikam verification with builds, videos, traces and agreed outcomes.",
+      "owner": "John; Kim confirms fixtures",
+      "gate": "Kim confirmation, implementation readiness and relevant product changes."
+    },
+    {
+      "id": "D1",
+      "title": "Adjacent work",
+      "status": "deferred",
+      "summary": "GrokBot, Angular upgrading, test-isolation refactoring, new TEFT tooling and unattended scheduling stay outside this PoC.",
+      "evidence": [
+        "DECISIONS.md"
+      ],
+      "next_action": "Use the owning cards if separately requested; do not begin these from this handover.",
+      "owner": "Owning workstreams",
+      "gate": ""
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "source": "Both sessions",
+      "finding": "Concurrent spec edits changed status while questions were still open.",
+      "resolution": "Retain merged history, latest accepted decisions and a draft status with explicit outstanding prerequisites.",
+      "state": "reconciled"
+    },
+    {
+      "id": "F2",
+      "source": "Hermes and earlier Codex summaries",
+      "finding": "The merged documentation PR was confused with Report Manager PR #267.",
+      "resolution": "GitHub confirms verification PR #1 merged; Report Manager #267 remains open. No product merge is claimed.",
+      "state": "corrected"
+    },
+    {
+      "id": "F3",
+      "source": "Hermes query plan and Codex query investigation",
+      "finding": "The four scripts were described as schema-grounded but do not exist, and the named tables are absent from the canonical schema.",
+      "resolution": "Preserve agreed scope; remove false mappings; require verified schema/calling-code evidence before coding.",
+      "state": "scope_resolved_implementation_todo"
+    },
+    {
+      "id": "F4",
+      "source": "Hermes Doctor implementation",
+      "finding": "The wrapper had a PowerShell syntax error, unsupported Sarah-script flags and a successful exit for blocked prerequisites.",
+      "resolution": "Fix the syntax, remove the invalid invocation, label unfinished integrations and return exit 2 on blockage; offline negative checks pass.",
+      "state": "corrected_in_this_branch"
+    },
+    {
+      "id": "F5",
+      "source": "Hermes maps and baseline summaries",
+      "finding": "One populated report grid was labelled a verified feature, with test-level and observation counts mixed.",
+      "resolution": "Mark the map draft/preliminary, preserve raw results and add an audit note with TRX counts.",
+      "state": "corrected"
+    },
+    {
+      "id": "F6",
+      "source": "Both progress pages and PR #2 reviews",
+      "finding": "Competing pages retained obsolete questions, unsupported PASS claims, invented refactor guidance and malformed markup.",
+      "resolution": "Replace them with one generated report, settled decisions and a machine-readable handover; keep re-review pending.",
+      "state": "addressed_reviewer_recheck_pending"
+    },
+    {
+      "id": "F7",
+      "source": "Hermes local session records",
+      "finding": "DECISIONS.md and HANDOVER.md were outside the repo and contained stale merged/finished claims.",
+      "resolution": "Track current versions in the branch; update the local entry points to those current records.",
+      "state": "corrected"
+    },
+    {
+      "id": "F8",
+      "source": "Hermes CODEOWNERS scaffold",
+      "finding": "Placeholder accounts and un-commented prose produced GitHub ownership errors.",
+      "resolution": "Use existing repository collaborators with verified write/admin access for the intended owners.",
+      "state": "corrected"
+    },
+    {
+      "id": "F9",
+      "source": "Setup and journey drafts",
+      "finding": "The workflow assumed removed Sarah write tests, agreed Sandra numbers and a fixture file that was not supplied.",
+      "resolution": "Use supported current tooling; retain a draft with Kim-owned resource/expected-value gates and mark unsupported legs.",
+      "state": "corrected"
+    },
+    {
+      "id": "F10",
+      "source": "Scaffold usage claims",
+      "finding": "Maintenance scheduling and full nontechnical handover were described more confidently than the evidence supported.",
+      "resolution": "Mark scheduling deferred and the scenario path drafted until a supervised end-to-end run exists.",
+      "state": "corrected"
+    }
+  ],
+  "accepted_decisions": [
+    "Four minimum read-only J1 queries remain in ENG-824; OQ-2 is resolved.",
+    "Contoso development tests precede Fabrikam final evidence and verification.",
+    "Independent work continues while Kim confirms final resources and expected values.",
+    "Keep existing product/TEFT ownership and the explicit out-of-scope boundaries."
+  ],
+  "prerequisites": [
+    {
+      "id": "OQ-1",
+      "mode": "PREREQUISITE",
+      "owner": "Kim",
+      "completion": "Reserved campaign/list/agent/numbers recorded and expected J1 values agreed with date.",
+      "blocks": "Accepted Fabrikam evidence; independent work continues."
+    },
+    {
+      "id": "OQ-3",
+      "mode": "FACT_RESEARCH",
+      "owner": "John",
+      "completion": "Cite verified tables/columns/identifiers, relationship confidence and state/outcome meanings from schema and owning code.",
+      "blocks": "Database query implementation and its proof."
+    }
+  ],
+  "baseline": {
+    "run_id": "20261026T130500Z-verification-run",
+    "environment": "contoso",
+    "verdict": "FAIL",
+    "smoke": {
+      "total": 1,
+      "passed": 1
+    },
+    "verification": {
+      "total": 22,
+      "executed": 7,
+      "passed": 2,
+      "failed": 5,
+      "unexecuted": 15
+    },
+    "grid_observation_is_test_pass": false,
+    "deployed_builds": "unknown",
+    "final_acceptance": false,
+    "raw_evidence_published": false,
+    "raw_trx_sha256": {
+      "e2e-smoke.trx": "daf62d7597c16acc25da62f8e181ca63e8377a6c55702a9ded70071713630635",
+      "e2e-verification.trx": "c4cf76c07a92c5fa6816122cd9bfc074930fcd1cdea5fd198831e4c29fed5874"
+    }
+  },
+  "validation": [
+    {
+      "name": "Doctor readiness regression",
+      "status": "PASS",
+      "detail": "PowerShell AST parse and three offline mocked cases: blocked prerequisites exit 2, unreachable environment exit 1, missing secrets exit 1. No network or Azure calls."
+    },
+    {
+      "name": "Standalone report interaction",
+      "status": "PASS",
+      "detail": "Six status filters, 11 planned-point rows, parseable/copyable handover JSON, local links and anchors checked; no browser errors."
+    },
+    {
+      "name": "Desktop and mobile report",
+      "status": "PASS",
+      "detail": "Headless Chromium at widths 1280 and 390; screenshots inspected and no horizontal overflow."
+    },
+    {
+      "name": "Source and shape consistency",
+      "status": "PASS",
+      "detail": "Deterministic regeneration, unique plan IDs, six journey headings and four feature-map headings; no host-only visualization API required."
+    },
+    {
+      "name": "GitHub ownership and branch reconciliation",
+      "status": "PASS",
+      "detail": "After push GitHub reports zero CODEOWNERS errors and PR #2 MERGEABLE; the existing changes-requested review remains pending."
+    },
+    {
+      "name": "Tenant verification",
+      "status": "NOT RUN",
+      "detail": "Consolidation used existing run evidence only; it does not create new Contoso or Fabrikam acceptance proof."
+    }
+  ],
+  "agent_handover": {
+    "read_first": [
+      "HANDOVER.md",
+      "DECISIONS.md",
+      "consolidation-status.json"
+    ],
+    "spec_url": "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md",
+    "grill_url": "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md",
+    "branch": "add-answers-artifact",
+    "existing_product_pr": "Noetica/nub_web_reportmanager#267",
+    "do_not_reask": [
+      "OQ-2 inclusion",
+      "Contoso-first/Fabrikam-final",
+      "Proceed with independent work during Kim prerequisite"
+    ],
+    "resume_order": [
+      "Verify schema/calling-code mappings",
+      "Finish grill and obtain final spec approval",
+      "Implement the four agreed read tools and supported Doctor integration",
+      "Review/configure the existing ENG-645 PR under its own workflow",
+      "Run Contoso checks with evidence",
+      "Get Kim confirmation and perform final Fabrikam acceptance"
+    ],
+    "blocked_checks_are_not_passes": true,
+    "avoid_concurrent_writers": true,
+    "no_automatic_pr_merge": true
+  },
+  "review_findings": [
+    {
+      "id": 4379134951,
+      "path": "answers-next-steps.html",
+      "issue": "The `",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379134951"
+    },
+    {
+      "id": 4379135022,
+      "path": "answers-next-steps.html",
+      "issue": "The status card shows PASS for Q1+Q2, but this PR has no test change, run ID, or evidence to support it",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135022"
+    },
+    {
+      "id": 4379135070,
+      "path": "answers-next-steps.html",
+      "issue": "The \"~9 seconds\" login cost is not measured",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135070"
+    },
+    {
+      "id": 4379135123,
+      "path": "answers-next-steps.html",
+      "issue": "The stray `</p>` on line 168 should be `</div>`",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135123"
+    },
+    {
+      "id": 4379135169,
+      "path": "answers-next-steps.html",
+      "issue": "The footer exposes a local Windows profile path (C:\\Users\\john\\), which reveals a personal username and points at files that are not in the repo",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135169"
+    },
+    {
+      "id": 4379135225,
+      "path": "answers-next-steps.html",
+      "issue": "The PR description says this PR updates DECISIONS",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135225"
+    },
+    {
+      "id": 4379135276,
+      "path": "answers-next-steps.html",
+      "issue": "This guidance is technically wrong",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135276"
+    },
+    {
+      "id": 4379234653,
+      "path": "answers-next-steps.html",
+      "issue": "The subtitle says all five answers are based on \"live test results\", but the status card says Q1 and Q2 are NOT VERIFIED with a rerun pending, and Q1 and Q2 rely on the test runs that have not yet been repeated",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379234653"
+    },
+    {
+      "id": 4379305721,
+      "path": "answers-next-steps.html",
+      "issue": "The PR description says this change \"Updates DECISIONS",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305721"
+    },
+    {
+      "id": 4379305809,
+      "path": "answers-next-steps.html",
+      "issue": "These lines state the Data Import cause as settled",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305809"
+    },
+    {
+      "id": 4379305886,
+      "path": "answers-next-steps.html",
+      "issue": "The cascade range is wrong for a 12-report suite",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305886"
+    },
+    {
+      "id": 4379305972,
+      "path": "progress-summary.html",
+      "issue": "This section still asks the user to decide Q1-Q5, but `answers-next-steps",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305972"
+    },
+    {
+      "id": 4379306030,
+      "path": "progress-summary.html",
+      "issue": "The `<strong>` element is closed with `</span>`, which is malformed HTML",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306030"
+    },
+    {
+      "id": 4379306089,
+      "path": "progress-summary.html",
+      "issue": "Same mismatched tag problem: `<strong>` is closed with `</span>`",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306089"
+    },
+    {
+      "id": 4379306153,
+      "path": "progress-summary.html",
+      "issue": "Question 5 now has two options marked \"Recommended\" (option 1 at line 291 and option 2 here)",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306153"
+    },
+    {
+      "id": 4379306240,
+      "path": "progress-summary.html",
+      "issue": "The `C:\\\\Users\\\\john\\\\",
+      "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
+      "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306240"
+    }
+  ]
+}

@@ -1,10 +1,14 @@
 # Environments
 
+Tests run on Contoso first for development feedback. Fabrikam supplies final evidence
+and verification. Neither a preliminary Contoso pass nor an environment URL proves
+that the expected product builds, fixtures and reserved resources are ready.
+
 ## Fabrikam (UAT)
 
 - **Report Manager URL:** `https://fabrikam.uat.noeticacloud.com/ReportManager`
 - **Login URL:** `https://fabrikam.uat.noeticacloud.com/ReportManager/?path=entra`
-- **Tenant ID:** (Kim names the reserved one at kickoff)
+- **Tenant ID:** pending confirmation from the approved environment configuration
 - **Reserved campaigns, lists, agents:** (Kim names these; recorded here when agreed)
 
 ### Credentials (from Key Vault, never in this file)
@@ -32,8 +36,10 @@ environment URL may also be in-vnet only (check with Sarah).
 - **Login URL:** `https://contoso.dev.noeticacloud.com/ReportManager/?path=entra`
 - **Persona:** admin (same Key Vault secrets)
 
-Contoso is the first target for the PoC. It has the same reports and data structure as
-Fabrikam but is the shared dev tenant (lower isolation, acceptable for the pilot).
+Contoso is the first development target. Do not assume its data, reserved resources
+or deployed builds match Fabrikam. Record environment-specific expected values and
+build identities. A Contoso read-only database credential source is not established
+in this repository; do not use a Fabrikam read as Contoso evidence.
 
 ## Data environments (allow-list for data-driven checks)
 

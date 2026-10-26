@@ -18,7 +18,7 @@ Read the index before driving the app, then use the matching feature file as the
 - Prefer ARIA roles and accessible names over CSS selectors or DOM position.
 - Treat every command as literal. Keep quoted names and flags unchanged.
 - Run browser actions through Playwright (the harness drives a real browser).
-- Run terminal actions through `pwsh scripts/run-e2e-tests.ps1` or `dotnet test`.
+- Use the owning repository's confirmed `dotnet test` entry point. Do not assume a README-referenced helper script exists.
 - Restore seeded data after a mutation. Do not remove proof artifacts during cleanup.
 
 ## Proof and skip reporting
@@ -47,7 +47,7 @@ required state, commands, and observable proof.
 
 | Report | Status | Route | Tests |
 |--------|--------|-------|-------|
-| Daily Outbound Interval | VERIFIED (2026-10-26) | `dailyoutboundintervalreport` | Grid populated 2.1s, no errors |
+| Daily Outbound Interval | draft; preliminary Contoso View observation | `dailyoutboundintervalreport` | Grid populated; totals, workbook and deployed builds unverified |
 | Outward Outcome | stub (ENG-644 regression) | `outboundoutcomereport` | Pending |
 | Data Import | stub (cascading failure observed) | `dataimportreport` | Grid did not populate (30s timeout) |
 | Data Penetration | stub | `datapenetrationreport` | Pending |
@@ -60,6 +60,8 @@ required state, commands, and observable proof.
 | Campaign Performance by Hour | stub | `campaignperformancebyhourreport` | Pending |
 | Data Penetration Extended | stub | `datapenetrationextendedreport` | Pending |
 
-All 12 dashboard reports have feature-map stubs. Daily Outbound Interval is the
-first verified; Data Import is the first failure (grid did not populate in the
-shared session, cascading through the remaining tests).
+All 12 dashboard reports have map entries. Daily Outbound Interval has a detailed
+draft and preliminary View evidence; none is accepted as fully verified. Data Import
+did not populate in the baseline's shared session, with four downstream test failures.
+The cause of the Data Import failure remains unconfirmed; changing its data or fixing
+test isolation is outside this implementation.
