@@ -1,0 +1,16 @@
+# Code owners
+
+Verification-curated content:
+maps/ @kim @sandra
+journeys/ @kim @sandra
+results/ @kim @sandra
+
+Harness scripts (tools/):
+tools/ @john-girardi
+
+Skill files (AGENTS.md, .claude/):
+AGENTS.md @john-girardi
+.claude/ @john-girardi
+
+Sarah's stand-up tester integration:
+tools/doctor/ @sarah-hedley
