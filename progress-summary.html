@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nub_verification - Progress Summary & Next Decisions</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --border: #334159;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --green: #22c55e;
+    --red: #ef4444;
+    --amber: #f59e0b;
+    --pill-bg: #0f172a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 24px;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 1.75rem; margin-bottom: 8px; }
+  h2 { font-size: 1.25rem; margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { font-size: 1.05rem; margin: 16px 0 8px; color: var(--accent2); }
+  .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 0.95rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 16px 0; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .stat { font-size: 2rem; font-weight: 700; margin-bottom: 4px; }
+  .stat-label { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat .pass { color: var(--green); }
+  .stat .fail { color: var(--red); }
+  .stat .skip { color: var(--amber); }
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tag-green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .tag-red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .tag-amber { background: rgba(245,152,66,0.15); color: var(--amber); }
+  .tag-blue { background: rgba(59,130,246,0.15); color: var(--accent); }
+  .tag-purple { background: rgba(139,92,246,0.15); color: var(--accent2); }
+  ul { margin: 8px 0 8px 20px; }
+  li { margin-bottom: 6px; }
+  .question {
+    background: var(--card);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+  .question h3 { margin-top: 0; }
+  .options { margin: 12px 0; }
+  .option {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 10px 0;
+    background: var(--pill-bg);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .option:hover { border-color: var(--accent); background: #141e30; }
+  .option .rank {
+    display: inline-block;
+    background: var(--border);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    font-weight: 700;
+    margin-right: 8px;
+    font-size: 0.8rem;
+  }
+  .option.recommended {
+    border-color: var(--accent);
+    background: rgba(59,130,246,0.08);
+  }
+  .option.recommended .badge {
+    background: var(--accent);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    margin-left: 8px;
+  }
+  .rec-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .rec-box {
+    background: rgba(59,130,246,0.08);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 12px 0;
+  }
+  .rec-box h4 { color: var(--accent); margin-bottom: 6px; font-size: 0.95rem; }
+  .footer { margin-top: 40px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 16px; }
+  .link { color: var(--accent); text-decoration: none; }
+  .link:hover { text-decoration: underline; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+  .summary-grid { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 640px) { .summary-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>nub_verification — Progress Summary &amp; Next Decisions</h1>
+<p class="subtitle">PoC testing harness for Sandra &amp; Kim. Last updated: 2026-10-26.</p>
+
+<h2>What was built so far</h2>
+<div class="grid summary-grid">
+  <div class="card"><div class="stat">4</div><div class="stat-label">Repo commits</div></div>
+  <div class="card"><div class="stat tag-blue">12</div><div class="stat-label">Report maps</div></div>
+  <div class="card"><div class="stat">1</div><div class="stat-label">Open PR (merged)</div></div>
+  <div class="card"><div class="stat">3</div><div class="stat-label">Files updated</div></div>
+</div>
+
+<ul>
+  <li><strong>GitHub repo:</strong> <a href="https://github.com/Noetica/nub_verification" class="link">Noetica/nub_verification</a> — scaffold, maps, journeys, Doctor, results</li>
+  <li><strong>First test run:</strong> Smoke test PASS; Daily Outbound Interval PASS (grid populated 2.1s); Data Import report FAILED</li>
+  <li><strong>Skip-gate fix:</strong> PR <a href="https://github.com/Noetica/nub_web_reportmanager/pull/267" class="link">#267</a> merged — CI now fails explicitly when vars are missing, uploads artifacts on pass, records video and traces</li>
+  <li><strong>Azure auth:</strong> Reuse your existing session (John.Girardi@noetica.com), Key Vault kv-noetica-dev-uksouth, no re-login needed</li>
+  <li><strong>Credentials:</strong> Remote switched to SSH — no more credential helper dialogs</li>
+</ul>
+
+<h2>Test results snapshot</h2>
+<div class="card">
+  <div style="display: flex; gap: 32px; flex-wrap: wrap;">
+    <div style="text-align: center;">
+      <div class="stat pass">2</div>
+      <div class="stat-label">Passed</div>
+    </div>
+    <div style="text-align: center;">
+      <div class="stat fail">5</div>
+      <div class="stat-label">Failed</div>
+    </div>
+    <div style="text-align: center;">
+      <div class="stat skip">15</div>
+      <div class="stat-label">Skipped</div>
+    </div>
+    <div style="text-align: center;">
+      <div class="stat">22</div>
+      <div class="stat-label">Total</div>
+    </div>
+  </div>
+  <p style="margin-top: 12px; color: var(--muted); font-size: 0.9rem;">Daily Outbound Interval works. 4 of 5 failures are cascading — they all hit /dataimportreport after the Data Import report grid did not render.</p>
+</div>
+
+<h2>What was learned</h2>
+<div class="grid">
+  <div class="card">
+    <h3 style="margin-top: 0;">Login works end-to-end</h3>
+    <p>Real admin login to Contoso took ~9 seconds. MSAL popup, TOTP, stay-signed-in prompt — the harness drives it all.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top: 0;">Data Import report is the blocker</h3>
+    <p>After entering inputs and clicking View Report, the results grid (`.p-datatable-table-container`) never appeared. 30-second timeout. Test data is dated 2026-01-01 to 2026-05-31.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top: 0;">Shared session = cascading failures</h3>
+    <p>One TOTP login (30-second window) is shared across all tests. A failure at report N leaves the browser stuck, blocking reports N+1 through N+12.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top: 0;">Failure evidence is captured</h3>
+    <p>Each failed test produced trace.zip + page.png + console.log in TestResults/failures/. The evidence pipeline works.</p>
+  </div>
+</div>
+
+<h2>Decisions needed from you</h2>
+
+<div class="question">
+  <h3>Question 1: Data Import report failure</h3>
+  <p>After View Report on the Data Import report, the results grid never appears. The test data is dated 2026-01-01 to 2026-05-31 with list path "Paul &gt; Campaign001 &gt; george3". This may be stale data that doesn't exist in Contoso, or a real product bug.</p>
+
+  <div class="options">
+    <div class="option recommended">
+      <span class="rank">1</span> <strong>Update the test data</strong>
+      <span class="rec-badge">Recommended</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Try a known-good date range and list path (e.g. reuse Daily Outbound Interval's data: 2025-12-29, "sandra &gt; EMAIL &gt; list01"). Record the change with a reason per ENG-550. If it passes with new data, the old data was stale, not a product bug.</p>
+    </div>
+    <div class="option">
+      <span class="rank">2</span> <strong>File a product bug</strong>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Create a Jira ticket under ENG-645 reporting the Data Import grid not rendering. Keep the test data as-is and re-test when the fix ships.</p>
+    </div>
+    <div class="option">
+      <span class="rank">3</span> <strong>Investigate the tenant</strong>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Use the London/Durham VPN to query the Contoso SQL database directly and check whether the data for that date range and list exists. More thorough but requires VPN + SQL access.</p>
+    </div>
+  </div>
+</div>
+
+<div class="question">
+  <h3>Question 2: Test isolation (fix the cascade)</h3>
+  <p>Currently, one TOTP login session is shared across all tests. A failure at one report leaves the browser stuck, causing 4 additional tests to fail. Should I fix this?</p>
+
+  <div class="options">
+    <div class="option recommended">
+      <span class="rank">1</span> <strong>Split into per-report tests with isolated sessions</strong>
+      <span class="rec-badge">Recommended</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Change the data-driven test to use one browser session per report, so a failure at report N does not block N+1. Cost: 4 extra logins (each ~9 seconds, within TOTP windows). Benefit: each report gets independent pass/fail evidence.</p>
+    </div>
+    <div class="option">
+      <span class="rank">2</span> <strong>Keep shared session, but reorder tests</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Run Daily Outbound Interval (the one that passes) before Data Import, so at least the passing tests produce evidence before the cascade hits.</p>
+    </div>
+    <div class="option">
+      <span class="rank">3</span> <strong>Leave as-is</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">The shared TOTP is a deliberate design constraint (PriorityOrderer sorts logout last). Accept the cascade as known behavior.</p>
+    </div>
+  </div>
+</div>
+
+<div class="question">
+  <h3>Question 3: What is "User Management"?</h3>
+  <p>Your answer to question 2 was simply "User Management." I need to know which card or system this refers to.</p>
+
+  <div class="options">
+    <div class="option recommended">
+      <span class="rank">1</span> <strong>ENG-823 (Stream A: TEFT as a test instrument)</strong>
+      <span class="rec-badge">Recommended</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">ENG-823 is about making TEFT (Telephony Engine for Testing) drivable by an agent. This matches "User Management" if the telephony system manages user identities. I can check its Jira status and see if the TEFT API key has been provisioned.</p>
+    </div>
+    <div class="option">
+      <span class="rank">2</span> <strong>ENG-825 (Stream A step A0)</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">ENG-825 is "Stream A step A0: close the open door." This is about securing TEFT endpoints. If "User Management" refers to securing access, I can track this card.</p>
+    </div>
+    <div class="option">
+      <span class="rank">3</span> <strong>nub_web_usermanagement Angular upgrade</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">The blitz plan mentions a contingency: "If John is on User Management instead" — a reference to an Angular upgrade on the nub_web_usermanagement repo. If this is what you meant, I can check its status.</p>
+    </div>
+  </div>
+</div>
+
+<div class="question">
+  <h3>Question 4: Angular upgrade details</h3>
+  <p>You said to proceed with driving an Angular upgrade. I need to know which app, from which version to which, and the tracking Jira card.</p>
+
+  <div class="options">
+    <div class="option recommended">
+      <span class="rank">1</span> <strong>nub_web_reportmanager (current app)</span>
+      <span class="rec-badge">Recommended</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Check the current Angular version in nub_web_reportmanager, then check Jira for the upgrade card (likely under ENG-645 or its children). Test the upgrade by running existing E2E tests against the upgraded build — the harness already runs Playwright tests.</p>
+    </div>
+    <div class="option">
+      <span class="rank">2</span> <strong>nub_web_usermanagement (separate app)</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">If "User Management" refers to a different app, I need its repo name and Jira card. I can clone, check versions, and run the upgrade + tests.</p>
+    </div>
+    <div class="option">
+      <span class="rank">3</span> <strong>Defer until Stream A is ready</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Wait until TEFT (ENG-823) is provisioned and the API key is available, then drive the upgrade as part of the full campaign lifecycle journey.</p>
+    </div>
+  </div>
+</div>
+
+<div class="question">
+  <h3>Question 5: GrokBot machines</h3>
+  <p>The artifact says "claude should be able to run any test Kim &amp; Sandra can run - GrokBot machines maybe." I need access details.</p>
+
+  <div class="options">
+    <div class="option recommended">
+      <span class="rank">1</span> <strong>Check Jira/Confluence for GrokBot docs</span>
+      <span class="rec-badge">Recommended</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Search Jira or Confluence for "GrokBot" to find the machine definition, access method (SSH/RDP), and pre-installed tools (TEFT, Playwright, browser).</p>
+    </div>
+    <div class="option">
+      <span class="rank">2</span> <strong>Treat as the Telephony Testing VM</span>
+      <span class="rec-badge">Recommended</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">GrokBot may be the Telephony Testing VM used for Stream A (ENG-823). If the TEFT team manages it, they can grant access. This may resolve both Question 3 and Question 5.</p>
+    </div>
+    <div class="option">
+      <span class="rank">3</span> <strong>Not needed yet</span>
+      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Skip GrokBot for now. The PoC can run entirely against Contoso + the local machine. Revisit when Sandra &amp; Kim need to run telephony tests.</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>DECISIONS.md: <code>C:\\Users\\john\\DECISIONS.md</code></p>
+  <p>HANDOVER.md: <code>C:\\Users\\john\\HANDOVER.md</code></p>
+  <p>nub_verification repo: <a href="https://github.com/Noetica/nub_verification" class="link">github.com/Noetica/nub_verification</a></p>
+  <p>Skip-gate fix PR: <a href="https://github.com/Noetica/nub_web_reportmanager/pull/267" class="link">PR #267 (merged)</a></p>
+</div>
+
+</div>
+</body>
+</html>

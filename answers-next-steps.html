@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>nub_verification - Answers & Next Steps</title>
+<title>nub_verification - Q1-Q5 Recap</title>
 <style>
   :root {
     --bg: #0f172a;
@@ -13,10 +13,8 @@
     --muted: #94a3b8;
     --accent: #3b82f6;
     --accent2: #8b5cf6;
-    --green: #22c55e;
-    --red: #ef4444;
     --amber: #f59e0b;
-    --pill-bg: #0f172a;
+    --red: #ef4444;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -29,7 +27,6 @@
   .container { max-width: 960px; margin: 0 auto; }
   h1 { font-size: 1.75rem; margin-bottom: 4px; }
   h2 { font-size: 1.25rem; margin: 28px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-  h3 { font-size: 1.05rem; margin: 16px 0 8px; color: var(--accent2); }
   .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 0.95rem; }
   .answer {
     background: var(--card);
@@ -38,7 +35,6 @@
     padding: 20px;
     margin: 16px 0;
   }
-  .answer h3 { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
   .label {
     display: inline-block;
     padding: 2px 10px;
@@ -48,25 +44,12 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-right: 8px;
-    margin-bottom: 6px;
   }
-  .label-1 { background: rgba(59,130,246,0.15); color: var(--accent); }
-  .label-2 { background: rgba(59,130,246,0.15); color: var(--accent); }
-  .label-3 { background: rgba(59,130,246,0.15); color: var(--accent); }
-  .label-4 { background: rgba(59,130,246,0.15); color: var(--accent); }
-  .label-5 { background: rgba(59,130,246,0.15); color: var(--accent); }
-  .rec-badge {
-    display: inline-block;
-    background: var(--accent);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    margin-left: 8px;
-  }
+  .label-deferred { background: rgba(245,152,66,0.15); color: var(--amber); }
+  .label-off { background: rgba(239,68,68,0.15); color: var(--red); }
+  .label-recorded { background: rgba(59,130,246,0.15); color: var(--accent); }
   ul { margin: 8px 0 8px 20px; }
-  li { margin-bottom: 5px; }
+  li { margin-bottom: 6px; }
   .tag {
     display: inline-block;
     padding: 1px 8px;
@@ -74,9 +57,9 @@
     font-size: 0.75rem;
     font-weight: 600;
   }
+  .tag-jira { background: rgba(245,152,66,0.15); color: var(--amber); }
   .tag-ang { background: rgba(139,92,246,0.15); color: var(--accent2); }
   .tag-e2e { background: rgba(59,130,246,0.15); color: var(--accent); }
-  .tag-jira { background: rgba(245,152,66,0.15); color: var(--amber); }
   .code-block {
     background: #0d1117;
     border: 1px solid var(--border);
@@ -86,157 +69,102 @@
     font-size: 0.85rem;
     margin: 8px 0;
     overflow-x: auto;
+    white-space: pre;
   }
-  .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 12px 0; }
+  .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 12px 0; }
   @media (max-width: 640px) { .status-grid { grid-template-columns: 1fr; } }
-  .status-card { text-align: center; padding: 12px; background: var(--card); border-radius: 6px; border: 1px solid var(--border); }
-  .status-card .num { font-size: 1.75rem; font-weight: 700; }
-  .status-card .lbl { color: var(--muted); font-size: 0.8rem; }
-  .decision-table { width: 100%; border-collapse: collapse; margin: 12px 0; }
-  .decision-table th, .decision-table td { padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-  .decision-table th { color: var(--muted); font-weight: 600; }
-  .decision-table .rec { color: var(--green); }
+  .status-card { text-align: center; padding: 14px; background: var(--card); border-radius: 6px; border: 1px solid var(--border); }
+  .status-card .num { font-size: 1.5rem; font-weight: 700; }
+  .status-card .lbl { color: var(--muted); font-size: 0.8rem; margin-top: 4px; }
   .footer { margin-top: 40px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 16px; }
   .link { color: var(--accent); text-decoration: none; }
   .link:hover { text-decoration: underline; }
-  .pros { border-left: 2px solid var(--green); padding-left: 12px; }
-  .cons { border-left: 2px solid var(--red); padding-left: 12px; }
-  .pros ul, .cons ul { color: var(--muted); font-size: 0.9rem; }
-  .pros li:before { content: "+ "; color: var(--green); }
-  .cons li:before { content: "- "; color: var(--red); }
 </style>
 </head>
 <body>
 <div class="container">
 
-<h1>nub_verification — Answers &amp; Next Steps</h1>
-<p class="subtitle">All 5 questions answered based on Jira card research, repo inspection, and live test results.</p>
+<h1>nub_verification — Q1-Q5 Recap</h1>
+<p class="subtitle">All 5 questions answered. Decisions and next tasks below.</p>
 
-<!-- Answers at a glance -->
 <div class="status-grid">
-  <div class="status-card"><div class="num pass">PASS</div><div class="lbl">Q1+Q2 applied</div></div>
-  <div class="status-card"><div class="num" style="color: var(--accent);">ENG-646</div><div class="lbl">Q3 resolved</div></div>
-  <div class="status-card"><div class="num" style="color: var(--accent2);">A11→A20</div><div class="lbl">Q4 path clear</div></div>
+  <div class="status-card"><div class="num" style="color: var(--accent);">RECORDED</div><div class="lbl">Q1+Q2 as POC goals</div></div>
+  <div class="status-card"><div class="num" style="color: var(--amber);">DEFERRED</div><div class="lbl">Q3+Q4 Angular upgrade</div></div>
+  <div class="status-card"><div class="num" style="color: var(--red);">OFF TABLE</div><div class="lbl">Q5 GrokBot</div></div>
+  <div class="status-card"><div class="num" style="color: var(--accent2);">ACTIVE</div><div class="lbl">POC build continues</div></div>
 </div>
 
 <!-- Q1 -->
 <div class="answer">
-  <h3><span class="label label-1">Q1: Data Import report failure</span> Updated to use Daily Outbound Interval data</h3>
-  <p><strong>Action:</strong> Change the Data Import report's test input to use known-good data — the same date and list that worked for Daily Outbound Interval (date 2025-12-29, list "sandra > EMAIL > list01").</p>
-  <p><strong>Why:</strong> The original data (2026-01-01 to 2026-05-31, list "Paul > Campaign001 > george3") likely doesn't exist in the Contoso tenant. The Daily Outbound Interval report rendered correctly with its data, proving the harness and environment work.</p>
-  <p><strong>Where:</strong> In the rpm_clone at <code>tests/ReportManager.E2E/TestData/report-inputs.contoso.json</code>, the <code>dataimportreport</code> entry.</p>
-  <p><strong>Per ENG-550 rules:</strong> Changing expected values is a test data change (not a product change), and must be recorded with a reason in DECISIONS.md.</p>
+  <h3><span class="label label-recorded">RECORDED</span> Q1: Data Import report failure</h3>
+  <p>Data Import fails because its test inputs likely don't exist in the Contoso tenant.</p>
+  <p>This is a known failure the finished POC handles when you say "investigate Data Import."</p>
+  <p>It is not being fixed as an implementation task now.</p>
 </div>
 
 <!-- Q2 -->
 <div class="answer">
-  <h3><span class="label label-2">Q2: Fix test isolation (stop the cascade)</span> Split per-report sessions</h3>
-  <p><strong>Action:</strong> Split the <code>DataDrivenReports_AcceptInputsAndRender</code> test so each report gets its own browser context and login session, instead of one shared session across all 12 reports.</p>
-  <p><strong>Why:</strong> One TOTP login (30-second window) is shared, so a failure at report N leaves the browser stuck on that report's page, cascading through reports N+1 to N+12. Daily Outbound Interval passes but Data Import fails, and the cascade masks whether the remaining 10 reports would pass on their own.</p>
-  <p><strong>Cost:</strong> ~9 seconds of login time per report (12 logins instead of 1). Acceptable for verification quality.</p>
-  <p><strong>How:</strong> Refactor to one xUnit test class per report, each with its own <code>IClassFixture</code> for the browser context. Or use a data-driven test with <code>[Theory]</code> + <code>Memoization.IClassFixture</code> per row.</p>
+  <h3><span class="label label-recorded">RECORDED</span> Q2: Test isolation cascade</h3>
+  <p>One TOTP login is shared across 12 reports, so a failure at report N cascades through reports N+1 to N+12.</p>
+  <p>Recorded as a POC capability gap. The finished harness should be able to fix this when you say "fix test isolation."</p>
+  <p>Not being fixed now.</p>
 </div>
 
 <!-- Q3 -->
 <div class="answer">
-  <h3><span class="label label-3">Q3: "User Management" = ENG-646</span><span class="label tag-jira">Jira</span></h3>
-  <p><strong>Resolved by review of Jira card content.</strong> "User Management" refers to ENG-646:
+  <h3><span class="label label-deferred">DEFERRED</span> Q3: "User Management" = ENG-646</h3>
+  <p>"User Management" = <span class="tag tag-jira">ENG-646</span>:
   <a href="https://noetica.atlassian.net/browse/ENG-646" class="link">Upgrade nub_web_usermanagement from Angular 11 and Node 14 to supported versions</a>.</p>
-
-  <p>The ENG-824 card (your current card) explicitly states the contingency:</p>
-  <blockquote style="border-left: 2px solid var(--border); padding-left: 16px; margin: 12px 0; color: var(--muted);">
-    "Luke, 22 Oct 2026: John may move to the nub_web_usermanagement Angular upgrade instead,
-    in which case the mapping piece serves that project."
-  </blockquote>
-
-  <p>So the User Management you mentioned is ENG-646 — the Angular upgrade. Here's what
-  I found:</p>
-
-  <div class="code-block">
-Current state (confirmed from repo):
-  Angular: ~11.2.12      msal-angular: 2.5.9      msal-browser: 2.38.0
-  Node: 14 (EOL)          Lockfile: package-lock.json (v1, npm 6)
-  UI library: Infragistics (ignite-ui-cli.json present)
+  <p>The <span class="tag tag-jira">ENG-824</span> card (your current card) confirms this as a contingency:
+  "John may move to the nub_web_usermanagement Angular upgrade instead."</p>
+  <p>This is a POC use case — the finished harness should be able to drive it. Do NOT start it now.</p>
+  <div class="code-block">nub_web_usermanagement repo state (confirmed):
+  Angular: ~11.2.12   Node: 14 (EOL)   msal-angular: 2.5.9   msal-browser: 2.38.0
+  E2E scripts: npm run e2e:smoke / npm run e2e:verification
 
 Target (matching Dashboard per ENG-441):
-  Angular: 20              msal-angular: 4.0.19    msal-browser: 4.21.1
-  Node: 20.19.4 (required by Vite 8 / Angular 20)
-
-Existing E2E tests (already wired up):
-  npm run e2e:smoke  -> pwsh scripts/run-e2e-tests.ps1 -Category Smoke
-  npm run e2e:verification -> same script -Category Verification
-</p>
-  <p><span class="label tag-ang">ENG-646</span> says step through Angular majors one at a time with <code>ng update</code>,
-  test after each step with the existing E2E suite, and watch Infragistics packages for
-  matching majors. <span class="label tag-jira">ENG-793</span> (related auth bug) was
-  investigated on the current Angular 11 stack and needs the same upgrade to fix.</p>
+  Angular: 20   Node: 20.19.4   msal-angular: 4.x   msal-browser: 4.x</div>
 </div>
 
 <!-- Q4 -->
 <div class="answer">
-  <h3><span class="label label-4">Q4: Angular upgrade path forward</span><span class="label tag-ang">Angular 20</span></h3>
-
-  <p><strong>Recommendation: Proceed with the Angular upgrade of nub_web_usermanagement.</strong>
-  The spec and Jira card details are sufficient to start. I have enough info — no need
-  to ask again.</p>
-
-  <table class="decision-table">
-    <tr><th>Decision</th><th>Details</th></tr>
-    <tr><td>Target Angular</td><td>20.3.32 (matches nub_web_dashboard, see ENG-441)</td></tr>
-    <tr><td>Node version</td><td>20.19.4 (required by Angular 20 and Vite 8)</td></tr>
-    <tr><td>Approach</td><td>Step through majors 11→12→13→14→...→20 with ng update</td></tr>
-    <tr><td>Verification</td><td>Run <code>npm run e2e:smoke</code> after each major</td></tr>
-    <tr><td>Infragistics</td><td>Check compatibility at each major; may need license update</td></tr>
-    <tr><td>MSAL</td><td>2.5.9→4.0.19, resolves ENG-793 auth bug</td></tr>
-    <tr><td>Lockfile</td><td>Migrate from npm 6 (lockfileVersion 1) to npm 10+</td></tr>
-  </table>
-
-  <p><strong>Plan:</strong> I'll switch the nub_verification harness to wrap the
-  nub_web_usermanagement E2E suite instead of Report Manager, then drive the Angular
-  upgrade step-by-step with e2e:smoke as the gate at each stage.</p>
+  <h3><span class="label label-deferred">DEFERRED</span> Q4: Angular upgrade path</h3>
+  <p>Target identified and documented in DECISIONS.md:</p>
+  <ul>
+    <li>Step through Angular majors 11 to 20 with <code>ng update</code></li>
+    <li>Gate each step with <code>npm run e2e:smoke</code></li>
+    <li>MSAL 2.5.9 to 4.x also resolves <span class="tag tag-jira">ENG-793</span> (auth bug)</li>
+    <li>Watch Infragistics packages at each major</li>
+  </ul>
+  <p>Not an implementation task. The POC should be capable of this workflow when asked.</p>
 </div>
 
 <!-- Q5 -->
 <div class="answer">
-  <h3><span class="label label-5">Q5: Should Sandra &amp; Kim use GrokBot?</span></h3>
+  <h3><span class="label label-off">OFF TABLE</span> Q5: GrokBot</h3>
+  <p><strong>Not pursued.</strong> GrokBot adds complexity (external cloud, paid Cursor seats,
+  no Noetica integration) without solving a problem the POC does not already solve.
+  Sandra and Kim type plain-English requests into Claude; Claude runs the E2E suite.</p>
+</div>
 
-  <p><strong>Recommendation: No, not as the primary tool. Use nub_verification +
-  Claude Code instead.</strong></p>
-
-  <div class="pros">
-    <h4 style="margin-bottom: 6px;">GrokBot could help:</h4>
-    <ul>
-      <li>Message from phone: Sandra/Kim could trigger tests by texting a Bot</li>
-      <li>Persistent sessions: browser login stays alive between runs</li>
-      <li>Coordination: one Bot for browser tests, another for TEFT calls</li>
-    </ul>
-  </div>
-
-  <div class="cons">
-    <h4 style="margin-bottom: 6px;">But the drawbacks outweigh this:</h4>
-    <ul>
-      <li>External to Noetica: tests run on Cursor's cloud, evidence lives there too</li>
-      <li>Per-seat cost: requires paid Cursor plans (not Noetica-paid)</li>
-      <li>Data residency: test conversations and evidence are in Cursor's cloud</li>
-      <li>Learning curve: Sandra/Kim are non-technical</li>
-      <li>No integration with Jira, Key Vault, or Noetica SSO</li>
-    </ul>
-  </div>
-
-  <p><strong>Better path:</strong> The nub_verification harness already gives Sandra/Kim
-  the "plain English to tests" workflow via <code>/test ENG-nnn</code> and the scenario
-  skill. They type what they want in a Claude chat, and Claude runs the E2E suite. No
-  extra cost, no external data, no new tool to learn. The Telephony Testing VM is already
-  accessible over the internet, so the Bot doesn't add remote access capability.</p>
-
-  <p><strong>If remote phone access is critical:</strong> consider GrokBot as a secondary
-  layer later, once the core harness is proven.</p>
+<h2>Tasks to carry out</h2>
+<div class="answer">
+<ul>
+  <li>Extend the scenario skill to cover <span class="tag tag-ang">ENG-646</span> (Angular upgrade) as a recognized journey the harness can drive when asked.</li>
+  <li>Extend the scenario skill to cover "investigate Data Import" as a recognized failure to triage.</li>
+  <li>Extend the scenario skill to cover "fix test isolation" as a recognized refactor.</li>
+  <li>Build the feature map for <span class="tag tag-ang">nub_web_usermanagement</span> E2E (12 smoke tests, 3 verification suites) in <code>maps/user-management/</code>.</li>
+  <li>Add an environment profile for user-management in <code>environments/</code> with the <code>e2e:smoke</code> entry point.</li>
+  <li>Update the scenario skill frontmatter to accept ENG-646 as a card input that resolves to the User Management map.</li>
+  <li>Run the User Management smoke suite against Contoso to prove the harness can drive an Angular app (parallel to the Report Manager proof already done).</li>
+  <li>Update HANDOVER.md with the new direction (GrokBot off the table; Angular upgrade is a POC use case).</li>
+</ul>
 </div>
 
 <div class="footer">
-  <p>Local files: DECISIONS.md and HANDOVER.md at C:\Users\john\</p>
-  <p>Repo: <a href="https://github.com/Noetica/nub_verification" class="link">github.com/Noetica/nub_verification</a> |
-  Skip-gate fix PR: <a href="https://github.com/Noetica/nub_web_reportmanager/pull/267" class="link">#267</a></p>
+  <p>Local files: <code>C:\Users\john\DECISIONS.md</code>, <code>C:\Users\john\HANDOVER.md</code></p>
+  <p>Repo: <a href="https://github.com/Noetica/nub_verification" class="link">github.com/Noetica/nub_verification</a></p>
+  <p>Artifact: <code>C:\Users\john\AppData\Local\hermes\cache\scratch\nub_verification\answers-next-steps.html</code></p>
 </div>
 
 </div>
