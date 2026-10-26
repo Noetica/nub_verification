@@ -1,316 +1,342 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>nub_verification - Earlier Progress Snapshot</title>
+<title>ENG-824 · Consolidated progress</title>
 <style>
-  :root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --border: #334159;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --accent: #3b82f6;
-    --accent2: #8b5cf6;
-    --green: #22c55e;
-    --red: #ef4444;
-    --amber: #f59e0b;
-    --pill-bg: #0f172a;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    padding: 24px;
-  }
-  .container { max-width: 960px; margin: 0 auto; }
-  h1 { font-size: 1.75rem; margin-bottom: 8px; }
-  h2 { font-size: 1.25rem; margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-  h3 { font-size: 1.05rem; margin: 16px 0 8px; color: var(--accent2); }
-  .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 0.95rem; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 16px 0; }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    transition: border-color 0.2s;
-  }
-  .card:hover { border-color: var(--accent); }
-  .stat { font-size: 2rem; font-weight: 700; margin-bottom: 4px; }
-  .stat-label { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
-  .stat .pass { color: var(--green); }
-  .stat .fail { color: var(--red); }
-  .stat .skip { color: var(--amber); }
-  .tag {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .tag-green { background: rgba(34,197,94,0.15); color: var(--green); }
-  .tag-red { background: rgba(239,68,68,0.15); color: var(--red); }
-  .tag-amber { background: rgba(245,152,66,0.15); color: var(--amber); }
-  .tag-blue { background: rgba(59,130,246,0.15); color: var(--accent); }
-  .tag-purple { background: rgba(139,92,246,0.15); color: var(--accent2); }
-  ul { margin: 8px 0 8px 20px; }
-  li { margin-bottom: 6px; }
-  .question {
-    background: var(--card);
-    border-left: 3px solid var(--accent2);
-    border-radius: 0 8px 8px 0;
-    padding: 16px 20px;
-    margin: 16px 0;
-  }
-  .question h3 { margin-top: 0; }
-  .options { margin: 12px 0; }
-  .option {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin: 10px 0;
-    background: var(--pill-bg);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .option:hover { border-color: var(--accent); background: #141e30; }
-  .option .rank {
-    display: inline-block;
-    background: var(--border);
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    text-align: center;
-    font-weight: 700;
-    margin-right: 8px;
-    font-size: 0.8rem;
-  }
-  .option.recommended {
-    border-color: var(--accent);
-    background: rgba(59,130,246,0.08);
-  }
-  .option.recommended .badge {
-    background: var(--accent);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    margin-left: 8px;
-  }
-  .rec-badge {
-    display: inline-block;
-    background: var(--accent);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
-  .rec-box {
-    background: rgba(59,130,246,0.08);
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    padding: 14px 20px;
-    margin: 12px 0;
-  }
-  .rec-box h4 { color: var(--accent); margin-bottom: 6px; font-size: 0.95rem; }
-  .footer { margin-top: 40px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 16px; }
-  .link { color: var(--accent); text-decoration: none; }
-  .link:hover { text-decoration: underline; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
-  .summary-grid { grid-template-columns: repeat(4, 1fr); }
-  @media (max-width: 640px) { .summary-grid { grid-template-columns: 1fr; } }
+:root { color-scheme:light dark; --bg:light-dark(#f7f7f4,#171b20); --fg:light-dark(#17212b,#edf0f3); --muted:light-dark(#465766,#b6c1cb); --line:light-dark(#c9d1d8,#46525c); --surface:light-dark(#ffffff,#212830); --link:light-dark(#165d9c,#8ac8ff); }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,sans-serif; }
+main { max-width:1080px; padding:32px 24px 64px; margin:auto; }
+h1 { font-size:clamp(1.8rem,5vw,2.8rem); line-height:1.15; font-weight:600; max-width:800px; margin:12px 0 20px; }
+h2 { font-size:1.4rem; margin:0 0 16px; }
+h3 { font-size:1rem; margin:0; font-weight:600; }
+p { margin:10px 0; }
+a { color:var(--link); overflow-wrap:anywhere; }
+section { margin-top:40px; }
+header { border-bottom:2px solid var(--line); padding-bottom:24px; }
+.eyebrow,.muted { color:var(--muted); }
+.eyebrow { letter-spacing:.06em; font-size:.85rem; text-transform:uppercase; }
+.lead { font-size:1.1rem; max-width:850px; }
+nav { display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:16px; }
+.toolbar,.point-title { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+select,button { color:var(--fg); background:var(--surface); font:inherit; padding:8px 12px; border:1px solid var(--line); border-radius:4px; }
+.point { padding:20px 0; border-bottom:1px solid var(--line); }
+.status { padding:2px 10px; border:1px solid var(--line); border-radius:3px; white-space:nowrap; font-size:.85rem; }
+.status.blocked { border-color:light-dark(#a55c19,#e0a86f); }
+.status.todo { border-style:dashed; }
+details { margin-top:12px; }
+summary { font-weight:500; padding:4px 0; }
+.finding { border-bottom:1px solid var(--line); padding:10px 0; }
+.evidence { display:flex; gap:8px 18px; flex-wrap:wrap; font-size:.9rem; }
+li { margin:10px 0; }
+pre { white-space:pre-wrap; overflow-wrap:anywhere; padding:16px; background:var(--surface); border:1px solid var(--line); font:13px/1.6 ui-monospace,monospace; }
+footer { margin-top:40px; padding-top:20px; border-top:1px solid var(--line); font-size:.9rem; }
+[hidden] { display:none !important; }
+@media(max-width:480px) { main { padding:24px 16px; } select { width:100%; } }
+@media print { body { background:white;color:black; } main { max-width:none; } .toolbar,button { display:none; } details { break-inside:avoid; } a { color:inherit; } }
 </style>
 </head>
-<body>
-<div class="container">
-
-<h1>nub_verification — Earlier Progress Snapshot</h1>
-<p class="subtitle">PoC testing harness for Sandra &amp; Kim. Snapshot: 2026-10-26. The questions and recommendations below are superseded by the <a href="answers-next-steps.html" class="link">Q1-Q5 recap and current next steps</a>.</p>
-
-<h2>What was built so far</h2>
-<div class="grid summary-grid">
-  <div class="card"><div class="stat">4</div><div class="stat-label">Repo commits</div></div>
-  <div class="card"><div class="stat tag-blue">12</div><div class="stat-label">Report maps</div></div>
-  <div class="card"><div class="stat">1</div><div class="stat-label">Open skip-gate PR</div></div>
-  <div class="card"><div class="stat">3</div><div class="stat-label">Files updated</div></div>
-</div>
-
-<ul>
-  <li><strong>GitHub repo:</strong> <a href="https://github.com/Noetica/nub_verification" class="link">Noetica/nub_verification</a> — scaffold, maps, journeys, Doctor, results</li>
-  <li><strong>First test run:</strong> Smoke test PASS; Daily Outbound Interval PASS (grid populated 2.1s); Data Import report FAILED</li>
-  <li><strong>Skip-gate fix:</strong> PR <a href="https://github.com/Noetica/nub_web_reportmanager/pull/267" class="link">#267</a> is open as of 2026-10-26. It proposes explicit CI failure when vars are missing, artifact uploads on pass, and video and trace recording; these changes are not yet merged.</li>
-  <li><strong>Azure auth:</strong> Reuse your existing session (John.Girardi@noetica.com), Key Vault kv-noetica-dev-uksouth, no re-login needed</li>
-  <li><strong>Credentials:</strong> Remote switched to SSH — no more credential helper dialogs</li>
-</ul>
-
-<h2>Test results snapshot</h2>
-<div class="card">
-  <div style="display: flex; gap: 32px; flex-wrap: wrap;">
-    <div style="text-align: center;">
-      <div class="stat pass">2</div>
-      <div class="stat-label">Passed</div>
-    </div>
-    <div style="text-align: center;">
-      <div class="stat fail">5</div>
-      <div class="stat-label">Failed</div>
-    </div>
-    <div style="text-align: center;">
-      <div class="stat skip">15</div>
-      <div class="stat-label">Skipped</div>
-    </div>
-    <div style="text-align: center;">
-      <div class="stat">22</div>
-      <div class="stat-label">Total</div>
-    </div>
-  </div>
-  <p style="margin-top: 12px; color: var(--muted); font-size: 0.9rem;">Daily Outbound Interval works. 4 of 5 failures are cascading — they all hit /dataimportreport after the Data Import report grid did not render.</p>
-</div>
-
-<h2>What was learned</h2>
-<div class="grid">
-  <div class="card">
-    <h3 style="margin-top: 0;">Login works end-to-end</h3>
-    <p>Real admin login to Contoso took ~9 seconds. MSAL popup, TOTP, stay-signed-in prompt — the harness drives it all.</p>
-  </div>
-  <div class="card">
-    <h3 style="margin-top: 0;">Data Import report is the blocker</h3>
-    <p>After entering inputs and clicking View Report, the results grid (`.p-datatable-table-container`) never appeared. 30-second timeout. Test data is dated 2026-01-01 to 2026-05-31.</p>
-  </div>
-  <div class="card">
-    <h3 style="margin-top: 0;">Shared session = cascading failures</h3>
-    <p>One TOTP login (30-second window) is shared across all tests. A failure at report N leaves the browser stuck, blocking reports N+1 through N+12.</p>
-  </div>
-  <div class="card">
-    <h3 style="margin-top: 0;">Failure evidence is captured</h3>
-    <p>Each failed test produced trace.zip + page.png + console.log in TestResults/failures/. The evidence pipeline works.</p>
-  </div>
-</div>
-
-<h2>Earlier questions — superseded</h2>
-<p>These earlier options are retained as history, not implementation instructions. See the <a href="answers-next-steps.html" class="link">resolved answers</a>: Q1/Q2 are POC goals, User Management is ENG-646, the Angular upgrade is deferred, and GrokBot is off the table.</p>
-
-<div class="question">
-  <h3>Question 1: Data Import report failure</h3>
-  <p>After View Report on the Data Import report, the results grid never appears. The test data is dated 2026-01-01 to 2026-05-31 with list path "Paul &gt; Campaign001 &gt; george3". This may be stale data that doesn't exist in Contoso, or a real product bug.</p>
-
-  <div class="options">
-    <div class="option recommended">
-      <span class="rank">1</span> <strong>Update the test data</strong>
-      <span class="rec-badge">Recommended</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Try a known-good date range and list path (e.g. reuse Daily Outbound Interval's data: 2025-12-29, "sandra &gt; EMAIL &gt; list01"). Record the change with a reason per ENG-550. If it passes with new data, the old data was stale, not a product bug.</p>
-    </div>
-    <div class="option">
-      <span class="rank">2</span> <strong>File a product bug</strong>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Create a Jira ticket under ENG-645 reporting the Data Import grid not rendering. Keep the test data as-is and re-test when the fix ships.</p>
-    </div>
-    <div class="option">
-      <span class="rank">3</span> <strong>Investigate the tenant</strong>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Use the London/Durham VPN to query the Contoso SQL database directly and check whether the data for that date range and list exists. More thorough but requires VPN + SQL access.</p>
-    </div>
-  </div>
-</div>
-
-<div class="question">
-  <h3>Question 2: Test isolation (fix the cascade)</h3>
-  <p>Currently, one TOTP login session is shared across all tests. A failure at one report leaves the browser stuck, causing 4 additional tests to fail. Should I fix this?</p>
-
-  <div class="options">
-    <div class="option recommended">
-      <span class="rank">1</span> <strong>Split into per-report tests with isolated sessions</strong>
-      <span class="rec-badge">Recommended</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Change the data-driven test to use one browser session per report, so a failure at report N does not block N+1. Cost: 4 extra logins (each ~9 seconds, within TOTP windows). Benefit: each report gets independent pass/fail evidence.</p>
-    </div>
-    <div class="option">
-      <span class="rank">2</span> <strong>Keep shared session, but reorder tests</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Run Daily Outbound Interval (the one that passes) before Data Import, so at least the passing tests produce evidence before the cascade hits.</p>
-    </div>
-    <div class="option">
-      <span class="rank">3</span> <strong>Leave as-is</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">The shared TOTP is a deliberate design constraint (PriorityOrderer sorts logout last). Accept the cascade as known behavior.</p>
-    </div>
-  </div>
-</div>
-
-<div class="question">
-  <h3>Question 3: What is "User Management"?</h3>
-  <p>Your answer to question 2 was simply "User Management." I need to know which card or system this refers to.</p>
-
-  <div class="options">
-    <div class="option recommended">
-      <span class="rank">1</span> <strong>ENG-823 (Stream A: TEFT as a test instrument)</strong>
-      <span class="rec-badge">Recommended</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">ENG-823 is about making TEFT (Telephony Engine for Testing) drivable by an agent. This matches "User Management" if the telephony system manages user identities. I can check its Jira status and see if the TEFT API key has been provisioned.</p>
-    </div>
-    <div class="option">
-      <span class="rank">2</span> <strong>ENG-825 (Stream A step A0)</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">ENG-825 is "Stream A step A0: close the open door." This is about securing TEFT endpoints. If "User Management" refers to securing access, I can track this card.</p>
-    </div>
-    <div class="option">
-      <span class="rank">3</span> <strong>nub_web_usermanagement Angular upgrade</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">The blitz plan mentions a contingency: "If John is on User Management instead" — a reference to an Angular upgrade on the nub_web_usermanagement repo. If this is what you meant, I can check its status.</p>
-    </div>
-  </div>
-</div>
-
-<div class="question">
-  <h3>Question 4: Angular upgrade details</h3>
-  <p>You said to proceed with driving an Angular upgrade. I need to know which app, from which version to which, and the tracking Jira card.</p>
-
-  <div class="options">
-    <div class="option recommended">
-      <span class="rank">1</span> <strong>nub_web_reportmanager (current app)</span>
-      <span class="rec-badge">Recommended</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Check the current Angular version in nub_web_reportmanager, then check Jira for the upgrade card (likely under ENG-645 or its children). Test the upgrade by running existing E2E tests against the upgraded build — the harness already runs Playwright tests.</p>
-    </div>
-    <div class="option">
-      <span class="rank">2</span> <strong>nub_web_usermanagement (separate app)</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">If "User Management" refers to a different app, I need its repo name and Jira card. I can clone, check versions, and run the upgrade + tests.</p>
-    </div>
-    <div class="option">
-      <span class="rank">3</span> <strong>Defer until Stream A is ready</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Wait until TEFT (ENG-823) is provisioned and the API key is available, then drive the upgrade as part of the full campaign lifecycle journey.</p>
-    </div>
-  </div>
-</div>
-
-<div class="question">
-  <h3>Question 5: GrokBot machines</h3>
-  <p>The artifact says "claude should be able to run any test Kim &amp; Sandra can run - GrokBot machines maybe." I need access details.</p>
-
-  <div class="options">
-    <div class="option recommended">
-      <span class="rank">1</span> <strong>Check Jira/Confluence for GrokBot docs</span>
-      <span class="rec-badge">Recommended</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Search Jira or Confluence for "GrokBot" to find the machine definition, access method (SSH/RDP), and pre-installed tools (TEFT, Playwright, browser).</p>
-    </div>
-    <div class="option">
-      <span class="rank">2</span> <strong>Treat as the Telephony Testing VM</span>
-      <span class="rec-badge">Recommended</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">GrokBot may be the Telephony Testing VM used for Stream A (ENG-823). If the TEFT team manages it, they can grant access. This may resolve both Question 3 and Question 5.</p>
-    </div>
-    <div class="option">
-      <span class="rank">3</span> <strong>Not needed yet</span>
-      <p style="margin: 6px 0 0; color: var(--muted); font-size: 0.85rem;">Skip GrokBot for now. The PoC can run entirely against Contoso + the local machine. Revisit when Sandra &amp; Kim need to run telephony tests.</p>
-    </div>
-  </div>
-</div>
-
-<div class="footer">
-  <p>DECISIONS.md: <code>C:\\Users\\john\\DECISIONS.md</code></p>
-  <p>HANDOVER.md: <code>C:\\Users\\john\\HANDOVER.md</code></p>
-  <p>nub_verification repo: <a href="https://github.com/Noetica/nub_verification" class="link">github.com/Noetica/nub_verification</a></p>
-  <p>Skip-gate fix PR: <a href="https://github.com/Noetica/nub_web_reportmanager/pull/267" class="link">PR #267 (open as of 2026-10-26)</a></p>
-</div>
-
-</div>
-</body>
-</html>
+<body><main>
+<header>
+<div class="eyebrow">ENG-824 · 2026-10-26T20:53:43Z</div>
+<h1>One consolidated verification PoC</h1>
+<p class="lead">The PoC and a preliminary Contoso baseline exist; the full journey and final Fabrikam verification are unfinished.</p>
+<p>Consolidation of the two sessions is complete. Product implementation and acceptance remain at the stages below.</p>
+<nav aria-label="Report sections"><a href="#plan">By planned point</a><a href="#findings">Findings from each workflow</a><a href="#evidence">Evidence</a><a href="#handover">Agent handover</a></nav>
+</header>
+<section aria-labelledby="agreed"><h2 id="agreed">What is agreed</h2><ul><li>Four minimum read-only J1 queries remain in ENG-824; OQ-2 is resolved.</li><li>Contoso development tests precede Fabrikam final evidence and verification.</li><li>Independent work continues while Kim confirms final resources and expected values.</li><li>Keep existing product/TEFT ownership and the explicit out-of-scope boundaries.</li></ul>
+<p><a href="https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md">Canonical spec</a> · <a href="https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md">Grill record</a> · status: <strong>draft, not approved</strong></p></section>
+<section aria-labelledby="workflows"><h2 id="workflows">What each session contributed</h2>
+<p><strong>Hermes:</strong> PoC implementation, baseline, product PR and spec-grill work retained; final approval had been requested, not received.</p>
+<p><strong>Codex:</strong> Scope split, Contoso-to-Fabrikam sequence, missing-query investigation and consolidated evidence corrections retained.</p>
+<p>The overlap was in the shared spec and delivery records. The existing product harness remains in its own PR; there is no second database implementation to merge.</p></section>
+<section aria-labelledby="plan"><h2 id="plan">Done, in progress and still to do</h2>
+<div class="toolbar"><label for="status-filter">Show planned points <select id="status-filter"><option value="all">All planned points</option><option value="done">Done / recorded</option><option value="in_progress">In progress</option><option value="todo">To do</option><option value="blocked">Blocked</option><option value="deferred">Deferred</option></select></label><output id="visible-count" aria-live="polite">11 planned points</output></div>
+<div id="points"><article class="point" data-status="done"><div class="point-title"><h3>C0 · Consolidate both sessions</h3><span class="status done">Done / recorded</span></div><p>One scope, one current report and one shared scenario body retain the useful work from both sessions.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> Review this snapshot; continue from the tracked handover.</p><p><strong>Owner:</strong> John</p><p class="evidence"><a href="DECISIONS.md">DECISIONS.md</a> <a href="HANDOVER.md">HANDOVER.md</a> <a href="consolidation-status.json">consolidation-status.json</a></p></details></article><article class="point" data-status="in_progress"><div class="point-title"><h3>S1 · Spec draft and grill</h3><span class="status in_progress">In progress</span></div><p>Scope and test sequence are settled; the four database reads remain included. Approval and research prerequisites are still outstanding.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> Verify query mappings and finish the grill before formal implementation approval.</p><p><strong>Owner:</strong> John</p><p><strong>Gate:</strong> Kim confirms final fixtures; technical schema research and final scope approval remain.</p><p class="evidence"><a href="DECISIONS.md">DECISIONS.md</a> <a href="https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md">https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md</a> <a href="https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md">https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md</a></p></details></article><article class="point" data-status="in_progress"><div class="point-title"><h3>B1 · Verification home</h3><span class="status in_progress">In progress</span></div><p>Repository, map/journey templates and result format exist; real CODEOWNERS identities and shared scenario instructions are now present.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> Complete the planned reference-home migration and retain the normal PR review.</p><p><strong>Owner:</strong> John; Kim and Sandra curate content</p><p class="evidence"><a href="README.md">README.md</a> <a href="CODEOWNERS">CODEOWNERS</a> <a href=".agents/skills/scenario/SKILL.md">.agents/skills/scenario/SKILL.md</a></p></details></article><article class="point" data-status="in_progress"><div class="point-title"><h3>B2 · Make Report Manager checks real</h3><span class="status in_progress">In progress</span></div><p>The existing product PR adds visible missing-configuration failure and retained evidence, but it is still open and its smoke gate fails.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> In ENG-645, resolve the approved runner/vault/URL prerequisites, review the PR and prove pass/fail evidence on actual runs.</p><p><strong>Owner:</strong> ENG-645 owner and John</p><p><strong>Gate:</strong> Open PR; four missing variables; no successful video/trace demonstration.</p><p class="evidence"><a href="tools/fix-escalation-gap.md">tools/fix-escalation-gap.md</a> <a href="https://github.com/Noetica/nub_web_reportmanager/pull/267">https://github.com/Noetica/nub_web_reportmanager/pull/267</a></p></details></article><article class="point" data-status="in_progress"><div class="point-title"><h3>B3 · Readiness check (Doctor)</h3><span class="status in_progress">In progress</span></div><p>The script exists and now stops on blocked checks; exact build checks and supported Sarah integration are unfinished.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> Implement verified build comparison and supported stand-up result handling before driving.</p><p><strong>Owner:</strong> John with Sarah</p><p><strong>Gate:</strong> Build source, integration and reserved resources pending.</p><p class="evidence"><a href="tools/doctor/fabrikam.ps1">tools/doctor/fabrikam.ps1</a> <a href="AGENTS.md">AGENTS.md</a></p></details></article><article class="point" data-status="todo"><div class="point-title"><h3>B4 · Four read-only journey queries</h3><span class="status todo">To do</span></div><p>Agreed scope, with no scripts implemented. The previous generic table names were not grounded in the canonical schema.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> Verify identifiers, joins, state meanings and attempt-history coverage, then implement only the four selected-record reads.</p><p><strong>Owner:</strong> John</p><p><strong>Gate:</strong> OQ-3: schema/calling-code research; matching Contoso connection source not established.</p><p class="evidence"><a href="tools/db/README.md">tools/db/README.md</a> <a href="https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md">https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md</a></p></details></article><article class="point" data-status="in_progress"><div class="point-title"><h3>B5 · First campaign journey</h3><span class="status in_progress">In progress</span></div><p>A six-heading draft now marks unagreed values and future call outcomes honestly; no complete accepted run exists.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> Kim agrees resources, import data and expected values; Sandra reviews wording; unsupported Stream A legs remain visible.</p><p><strong>Owner:</strong> John drafts; Kim agrees; Sandra reviews</p><p><strong>Gate:</strong> OQ-1; database reads and relevant Stream A support.</p><p class="evidence"><a href="journeys/campaign-lifecycle.md">journeys/campaign-lifecycle.md</a></p></details></article><article class="point" data-status="in_progress"><div class="point-title"><h3>B6 · Plain-English card/scenario entry point</h3><span class="status in_progress">In progress</span></div><p>The scenario workflow and Claude adapter exist; end-to-end use by Sandra or Kim has not been evidenced.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> After readiness and tools work, run one supervised named-card scenario and retain its evidence.</p><p><strong>Owner:</strong> John; Sandra/Kim handover</p><p><strong>Gate:</strong> Supporting tools, fixtures and exact build identity pending.</p><p class="evidence"><a href=".agents/skills/scenario/SKILL.md">.agents/skills/scenario/SKILL.md</a> <a href=".claude/commands/test.md">.claude/commands/test.md</a></p></details></article><article class="point" data-status="done"><div class="point-title"><h3>V1 · Contoso baseline</h3><span class="status done">Done / recorded</span></div><p>A historical smoke pass and failed verification run are recorded; this is preliminary development evidence.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> Repeat the selected checks against intended builds after implementation; preserve the original failures.</p><p><strong>Owner:</strong> John</p><p><strong>Gate:</strong> Recorded run verdict FAIL; not final acceptance.</p><p class="evidence"><a href="results/20261026T130500Z-verification-run/result.md">results/20261026T130500Z-verification-run/result.md</a> <a href="results/20261026T130500Z-verification-run/audit.md">results/20261026T130500Z-verification-run/audit.md</a></p></details></article><article class="point" data-status="blocked"><div class="point-title"><h3>V2 · Fabrikam final evidence</h3><span class="status blocked">Blocked</span></div><p>No accepted final Fabrikam result is recorded.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> After Contoso checks and Kim confirmation, run final Fabrikam verification with builds, videos, traces and agreed outcomes.</p><p><strong>Owner:</strong> John; Kim confirms fixtures</p><p><strong>Gate:</strong> Kim confirmation, implementation readiness and relevant product changes.</p><p class="evidence"><a href="environments/fabrikam.md">environments/fabrikam.md</a> <a href="https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md">https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md</a></p></details></article><article class="point" data-status="deferred"><div class="point-title"><h3>D1 · Adjacent work</h3><span class="status deferred">Deferred</span></div><p>GrokBot, Angular upgrading, test-isolation refactoring, new TEFT tooling and unattended scheduling stay outside this PoC.</p><details><summary>Next step and evidence</summary><p><strong>Next:</strong> Use the owning cards if separately requested; do not begin these from this handover.</p><p><strong>Owner:</strong> Owning workstreams</p><p class="evidence"><a href="DECISIONS.md">DECISIONS.md</a></p></details></article></div></section>
+<section aria-labelledby="findings"><h2 id="findings">Findings from each workflow</h2><details class="finding"><summary>F1 · Concurrent spec edits changed status while questions were still open.</summary><p><strong>Source:</strong> Both sessions</p><p>Retain merged history, latest accepted decisions and a draft status with explicit outstanding prerequisites.</p><p class="muted">reconciled</p></details><details class="finding"><summary>F2 · The merged documentation PR was confused with Report Manager PR #267.</summary><p><strong>Source:</strong> Hermes and earlier Codex summaries</p><p>GitHub confirms verification PR #1 merged; Report Manager #267 remains open. No product merge is claimed.</p><p class="muted">corrected</p></details><details class="finding"><summary>F3 · The four scripts were described as schema-grounded but do not exist, and the named tables are absent from the canonical schema.</summary><p><strong>Source:</strong> Hermes query plan and Codex query investigation</p><p>Preserve agreed scope; remove false mappings; require verified schema/calling-code evidence before coding.</p><p class="muted">scope_resolved_implementation_todo</p></details><details class="finding"><summary>F4 · The wrapper had a PowerShell syntax error, unsupported Sarah-script flags and a successful exit for blocked prerequisites.</summary><p><strong>Source:</strong> Hermes Doctor implementation</p><p>Fix the syntax, remove the invalid invocation, label unfinished integrations and return exit 2 on blockage; offline negative checks pass.</p><p class="muted">corrected_in_this_branch</p></details><details class="finding"><summary>F5 · One populated report grid was labelled a verified feature, with test-level and observation counts mixed.</summary><p><strong>Source:</strong> Hermes maps and baseline summaries</p><p>Mark the map draft/preliminary, preserve raw results and add an audit note with TRX counts.</p><p class="muted">corrected</p></details><details class="finding"><summary>F6 · Competing pages retained obsolete questions, unsupported PASS claims, invented refactor guidance and malformed markup.</summary><p><strong>Source:</strong> Both progress pages and PR #2 reviews</p><p>Replace them with one generated report, settled decisions and a machine-readable handover; keep re-review pending.</p><p class="muted">addressed_reviewer_recheck_pending</p></details><details class="finding"><summary>F7 · DECISIONS.md and HANDOVER.md were outside the repo and contained stale merged/finished claims.</summary><p><strong>Source:</strong> Hermes local session records</p><p>Track current versions in the branch; update the local entry points to those current records.</p><p class="muted">corrected</p></details><details class="finding"><summary>F8 · Placeholder accounts and un-commented prose produced GitHub ownership errors.</summary><p><strong>Source:</strong> Hermes CODEOWNERS scaffold</p><p>Use existing repository collaborators with verified write/admin access for the intended owners.</p><p class="muted">corrected</p></details><details class="finding"><summary>F9 · The workflow assumed removed Sarah write tests, agreed Sandra numbers and a fixture file that was not supplied.</summary><p><strong>Source:</strong> Setup and journey drafts</p><p>Use supported current tooling; retain a draft with Kim-owned resource/expected-value gates and mark unsupported legs.</p><p class="muted">corrected</p></details><details class="finding"><summary>F10 · Maintenance scheduling and full nontechnical handover were described more confidently than the evidence supported.</summary><p><strong>Source:</strong> Scaffold usage claims</p><p>Mark scheduling deferred and the scenario path drafted until a supervised end-to-end run exists.</p><p class="muted">corrected</p></details></section>
+<section aria-labelledby="gates"><h2 id="gates">Remaining prerequisites</h2><ul><li><strong>OQ-1 — Kim</strong>: Reserved campaign/list/agent/numbers recorded and expected J1 values agreed with date.<br><span class="muted">Blocks: Accepted Fabrikam evidence; independent work continues.</span></li><li><strong>OQ-3 — John</strong>: Cite verified tables/columns/identifiers, relationship confidence and state/outcome meanings from schema and owning code.<br><span class="muted">Blocks: Database query implementation and its proof.</span></li></ul>
+<p>These are delivery gates, not new questions about the already agreed scope.</p></section>
+<section aria-labelledby="evidence"><h2 id="evidence">What the evidence actually shows</h2>
+<p><strong>Contoso baseline, 26 Oct at 13:05 UTC: overall verification failed.</strong> Smoke: 1 passed test. Verification: 2 passed, 5 failed and 15 unexecuted. The Daily Outbound grid observation was inside a test that later failed; deployed builds were unknown.</p>
+<p><a href="results/20261026T130500Z-verification-run/audit.md">Baseline audit and count clarification</a>. No live tenant tests were rerun during consolidation.</p>
+<p>Report Manager <a href="https://github.com/Noetica/nub_web_reportmanager/pull/267">PR #267</a> is <strong>open</strong>; its <a href="https://github.com/Noetica/nub_web_reportmanager/actions/runs/40335002616">smoke preflight failed on missing configuration</a>. That confirms visible blockage, not a passing suite or final video/trace proof.</p>
+<p>The separate <a href="https://github.com/Noetica/nub_verification/pull/1">verification documentation PR #1</a> merged. This <a href="https://github.com/Noetica/nub_verification/pull/2">consolidation PR #2</a> still needs re-review.</p></section>
+<section aria-labelledby="handover"><h2 id="handover">Agent handover</h2>
+<p><a href="HANDOVER.md">Read the resume sequence</a> · <a href="DECISIONS.md">Read settled decisions</a> · <a href="consolidation-status.json" download>Download status JSON</a></p>
+<details><summary>Open agent-optimized source, decisions, gates and task state</summary>
+<button id="copy-handover" type="button">Copy handover JSON</button><span id="copy-status" role="status" aria-live="polite"></span>
+<pre id="agent-state">{
+  &quot;issue&quot;: &quot;ENG-824&quot;,
+  &quot;observed_at_utc&quot;: &quot;2026-10-26T20:53:43Z&quot;,
+  &quot;sources&quot;: {
+    &quot;spec&quot;: {
+      &quot;commit&quot;: &quot;2946d8e26602371ee02af32cd6611e35b2c3568e&quot;,
+      &quot;status&quot;: &quot;draft&quot;,
+      &quot;url&quot;: &quot;https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md&quot;,
+      &quot;grill_url&quot;: &quot;https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md&quot;
+    },
+    &quot;hermes&quot;: {
+      &quot;session_id&quot;: &quot;local-b0d496ad7076604228db7bbacda5c75b9d6c95f257bd137a954cf5b0e255ca0d&quot;,
+      &quot;end_reason&quot;: &quot;cli_close&quot;,
+      &quot;outcome&quot;: &quot;PoC implementation, baseline, product PR and spec-grill work retained; final approval had been requested, not received.&quot;
+    },
+    &quot;codex&quot;: {
+      &quot;commits&quot;: [
+        &quot;d3db8f9&quot;,
+        &quot;81bdf7d&quot;,
+        &quot;2946d8e&quot;
+      ],
+      &quot;outcome&quot;: &quot;Scope split, Contoso-to-Fabrikam sequence, missing-query investigation and consolidated evidence corrections retained.&quot;
+    },
+    &quot;verification&quot;: {
+      &quot;branch&quot;: &quot;add-answers-artifact&quot;,
+      &quot;source_commit&quot;: &quot;b4ecc096b6cba259eb11da02d18c7982a63e1405&quot;,
+      &quot;pr&quot;: &quot;https://github.com/Noetica/nub_verification/pull/2&quot;,
+      &quot;pr_state&quot;: &quot;OPEN&quot;,
+      &quot;review_decision&quot;: &quot;CHANGES_REQUESTED&quot;
+    },
+    &quot;report_manager&quot;: {
+      &quot;commit&quot;: &quot;8d55c0073d8ae332af4476fe879b5c3328b9b00a&quot;,
+      &quot;branch&quot;: &quot;fix/skip-gate-video-trace&quot;,
+      &quot;pr&quot;: &quot;https://github.com/Noetica/nub_web_reportmanager/pull/267&quot;,
+      &quot;pr_state&quot;: &quot;OPEN&quot;,
+      &quot;smoke&quot;: &quot;FAIL: missing four repository variables&quot;,
+      &quot;run&quot;: &quot;https://github.com/Noetica/nub_web_reportmanager/actions/runs/40335002616&quot;
+    },
+    &quot;schema&quot;: {
+      &quot;commit&quot;: &quot;1e467bd733006a18e70cbf9bfae2181f200f080f&quot;,
+      &quot;url&quot;: &quot;https://github.com/Noetica/nub_documents/blob/1e467bd733006a18e70cbf9bfae2181f200f080f/database/schema-reference.md&quot;
+    },
+    &quot;merged_documentation_pr&quot;: {
+      &quot;url&quot;: &quot;https://github.com/Noetica/nub_verification/pull/1&quot;,
+      &quot;merged_at&quot;: &quot;2026-10-26T14:14:38Z&quot;
+    }
+  },
+  &quot;accepted_decisions&quot;: [
+    &quot;Four minimum read-only J1 queries remain in ENG-824; OQ-2 is resolved.&quot;,
+    &quot;Contoso development tests precede Fabrikam final evidence and verification.&quot;,
+    &quot;Independent work continues while Kim confirms final resources and expected values.&quot;,
+    &quot;Keep existing product/TEFT ownership and the explicit out-of-scope boundaries.&quot;
+  ],
+  &quot;planned_points&quot;: [
+    {
+      &quot;id&quot;: &quot;C0&quot;,
+      &quot;title&quot;: &quot;Consolidate both sessions&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;summary&quot;: &quot;One scope, one current report and one shared scenario body retain the useful work from both sessions.&quot;,
+      &quot;evidence&quot;: [
+        &quot;DECISIONS.md&quot;,
+        &quot;HANDOVER.md&quot;,
+        &quot;consolidation-status.json&quot;
+      ],
+      &quot;next_action&quot;: &quot;Review this snapshot; continue from the tracked handover.&quot;,
+      &quot;owner&quot;: &quot;John&quot;,
+      &quot;gate&quot;: &quot;&quot;
+    },
+    {
+      &quot;id&quot;: &quot;S1&quot;,
+      &quot;title&quot;: &quot;Spec draft and grill&quot;,
+      &quot;status&quot;: &quot;in_progress&quot;,
+      &quot;summary&quot;: &quot;Scope and test sequence are settled; the four database reads remain included. Approval and research prerequisites are still outstanding.&quot;,
+      &quot;evidence&quot;: [
+        &quot;DECISIONS.md&quot;,
+        &quot;https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md&quot;,
+        &quot;https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md&quot;
+      ],
+      &quot;next_action&quot;: &quot;Verify query mappings and finish the grill before formal implementation approval.&quot;,
+      &quot;owner&quot;: &quot;John&quot;,
+      &quot;gate&quot;: &quot;Kim confirms final fixtures; technical schema research and final scope approval remain.&quot;
+    },
+    {
+      &quot;id&quot;: &quot;B1&quot;,
+      &quot;title&quot;: &quot;Verification home&quot;,
+      &quot;status&quot;: &quot;in_progress&quot;,
+      &quot;summary&quot;: &quot;Repository, map/journey templates and result format exist; real CODEOWNERS identities and shared scenario instructions are now present.&quot;,
+      &quot;evidence&quot;: [
+        &quot;README.md&quot;,
+        &quot;CODEOWNERS&quot;,
+        &quot;.agents/skills/scenario/SKILL.md&quot;
+      ],
+      &quot;next_action&quot;: &quot;Complete the planned reference-home migration and retain the normal PR review.&quot;,
+      &quot;owner&quot;: &quot;John; Kim and Sandra curate content&quot;,
+      &quot;gate&quot;: &quot;&quot;
+    },
+    {
+      &quot;id&quot;: &quot;B2&quot;,
+      &quot;title&quot;: &quot;Make Report Manager checks real&quot;,
+      &quot;status&quot;: &quot;in_progress&quot;,
+      &quot;summary&quot;: &quot;The existing product PR adds visible missing-configuration failure and retained evidence, but it is still open and its smoke gate fails.&quot;,
+      &quot;evidence&quot;: [
+        &quot;tools/fix-escalation-gap.md&quot;,
+        &quot;https://github.com/Noetica/nub_web_reportmanager/pull/267&quot;
+      ],
+      &quot;next_action&quot;: &quot;In ENG-645, resolve the approved runner/vault/URL prerequisites, review the PR and prove pass/fail evidence on actual runs.&quot;,
+      &quot;owner&quot;: &quot;ENG-645 owner and John&quot;,
+      &quot;gate&quot;: &quot;Open PR; four missing variables; no successful video/trace demonstration.&quot;
+    },
+    {
+      &quot;id&quot;: &quot;B3&quot;,
+      &quot;title&quot;: &quot;Readiness check (Doctor)&quot;,
+      &quot;status&quot;: &quot;in_progress&quot;,
+      &quot;summary&quot;: &quot;The script exists and now stops on blocked checks; exact build checks and supported Sarah integration are unfinished.&quot;,
+      &quot;evidence&quot;: [
+        &quot;tools/doctor/fabrikam.ps1&quot;,
+        &quot;AGENTS.md&quot;
+      ],
+      &quot;next_action&quot;: &quot;Implement verified build comparison and supported stand-up result handling before driving.&quot;,
+      &quot;owner&quot;: &quot;John with Sarah&quot;,
+      &quot;gate&quot;: &quot;Build source, integration and reserved resources pending.&quot;
+    },
+    {
+      &quot;id&quot;: &quot;B4&quot;,
+      &quot;title&quot;: &quot;Four read-only journey queries&quot;,
+      &quot;status&quot;: &quot;todo&quot;,
+      &quot;summary&quot;: &quot;Agreed scope, with no scripts implemented. The previous generic table names were not grounded in the canonical schema.&quot;,
+      &quot;evidence&quot;: [
+        &quot;tools/db/README.md&quot;,
+        &quot;https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md&quot;
+      ],
+      &quot;next_action&quot;: &quot;Verify identifiers, joins, state meanings and attempt-history coverage, then implement only the four selected-record reads.&quot;,
+      &quot;owner&quot;: &quot;John&quot;,
+      &quot;gate&quot;: &quot;OQ-3: schema/calling-code research; matching Contoso connection source not established.&quot;
+    },
+    {
+      &quot;id&quot;: &quot;B5&quot;,
+      &quot;title&quot;: &quot;First campaign journey&quot;,
+      &quot;status&quot;: &quot;in_progress&quot;,
+      &quot;summary&quot;: &quot;A six-heading draft now marks unagreed values and future call outcomes honestly; no complete accepted run exists.&quot;,
+      &quot;evidence&quot;: [
+        &quot;journeys/campaign-lifecycle.md&quot;
+      ],
+      &quot;next_action&quot;: &quot;Kim agrees resources, import data and expected values; Sandra reviews wording; unsupported Stream A legs remain visible.&quot;,
+      &quot;owner&quot;: &quot;John drafts; Kim agrees; Sandra reviews&quot;,
+      &quot;gate&quot;: &quot;OQ-1; database reads and relevant Stream A support.&quot;
+    },
+    {
+      &quot;id&quot;: &quot;B6&quot;,
+      &quot;title&quot;: &quot;Plain-English card/scenario entry point&quot;,
+      &quot;status&quot;: &quot;in_progress&quot;,
+      &quot;summary&quot;: &quot;The scenario workflow and Claude adapter exist; end-to-end use by Sandra or Kim has not been evidenced.&quot;,
+      &quot;evidence&quot;: [
+        &quot;.agents/skills/scenario/SKILL.md&quot;,
+        &quot;.claude/commands/test.md&quot;
+      ],
+      &quot;next_action&quot;: &quot;After readiness and tools work, run one supervised named-card scenario and retain its evidence.&quot;,
+      &quot;owner&quot;: &quot;John; Sandra/Kim handover&quot;,
+      &quot;gate&quot;: &quot;Supporting tools, fixtures and exact build identity pending.&quot;
+    },
+    {
+      &quot;id&quot;: &quot;V1&quot;,
+      &quot;title&quot;: &quot;Contoso baseline&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;summary&quot;: &quot;A historical smoke pass and failed verification run are recorded; this is preliminary development evidence.&quot;,
+      &quot;evidence&quot;: [
+        &quot;results/20261026T130500Z-verification-run/result.md&quot;,
+        &quot;results/20261026T130500Z-verification-run/audit.md&quot;
+      ],
+      &quot;next_action&quot;: &quot;Repeat the selected checks against intended builds after implementation; preserve the original failures.&quot;,
+      &quot;owner&quot;: &quot;John&quot;,
+      &quot;gate&quot;: &quot;Recorded run verdict FAIL; not final acceptance.&quot;
+    },
+    {
+      &quot;id&quot;: &quot;V2&quot;,
+      &quot;title&quot;: &quot;Fabrikam final evidence&quot;,
+      &quot;status&quot;: &quot;blocked&quot;,
+      &quot;summary&quot;: &quot;No accepted final Fabrikam result is recorded.&quot;,
+      &quot;evidence&quot;: [
+        &quot;environments/fabrikam.md&quot;,
+        &quot;https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md&quot;
+      ],
+      &quot;next_action&quot;: &quot;After Contoso checks and Kim confirmation, run final Fabrikam verification with builds, videos, traces and agreed outcomes.&quot;,
+      &quot;owner&quot;: &quot;John; Kim confirms fixtures&quot;,
+      &quot;gate&quot;: &quot;Kim confirmation, implementation readiness and relevant product changes.&quot;
+    },
+    {
+      &quot;id&quot;: &quot;D1&quot;,
+      &quot;title&quot;: &quot;Adjacent work&quot;,
+      &quot;status&quot;: &quot;deferred&quot;,
+      &quot;summary&quot;: &quot;GrokBot, Angular upgrading, test-isolation refactoring, new TEFT tooling and unattended scheduling stay outside this PoC.&quot;,
+      &quot;evidence&quot;: [
+        &quot;DECISIONS.md&quot;
+      ],
+      &quot;next_action&quot;: &quot;Use the owning cards if separately requested; do not begin these from this handover.&quot;,
+      &quot;owner&quot;: &quot;Owning workstreams&quot;,
+      &quot;gate&quot;: &quot;&quot;
+    }
+  ],
+  &quot;prerequisites&quot;: [
+    {
+      &quot;id&quot;: &quot;OQ-1&quot;,
+      &quot;mode&quot;: &quot;PREREQUISITE&quot;,
+      &quot;owner&quot;: &quot;Kim&quot;,
+      &quot;completion&quot;: &quot;Reserved campaign/list/agent/numbers recorded and expected J1 values agreed with date.&quot;,
+      &quot;blocks&quot;: &quot;Accepted Fabrikam evidence; independent work continues.&quot;
+    },
+    {
+      &quot;id&quot;: &quot;OQ-3&quot;,
+      &quot;mode&quot;: &quot;FACT_RESEARCH&quot;,
+      &quot;owner&quot;: &quot;John&quot;,
+      &quot;completion&quot;: &quot;Cite verified tables/columns/identifiers, relationship confidence and state/outcome meanings from schema and owning code.&quot;,
+      &quot;blocks&quot;: &quot;Database query implementation and its proof.&quot;
+    }
+  ],
+  &quot;resume&quot;: {
+    &quot;read_first&quot;: [
+      &quot;HANDOVER.md&quot;,
+      &quot;DECISIONS.md&quot;,
+      &quot;consolidation-status.json&quot;
+    ],
+    &quot;spec_url&quot;: &quot;https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md&quot;,
+    &quot;grill_url&quot;: &quot;https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md&quot;,
+    &quot;branch&quot;: &quot;add-answers-artifact&quot;,
+    &quot;existing_product_pr&quot;: &quot;Noetica/nub_web_reportmanager#267&quot;,
+    &quot;do_not_reask&quot;: [
+      &quot;OQ-2 inclusion&quot;,
+      &quot;Contoso-first/Fabrikam-final&quot;,
+      &quot;Proceed with independent work during Kim prerequisite&quot;
+    ],
+    &quot;resume_order&quot;: [
+      &quot;Verify schema/calling-code mappings&quot;,
+      &quot;Implement the four agreed read tools and supported Doctor integration&quot;,
+      &quot;Finish grill and obtain final spec approval&quot;,
+      &quot;Review/configure the existing ENG-645 PR under its own workflow&quot;,
+      &quot;Run Contoso checks with evidence&quot;,
+      &quot;Get Kim confirmation and perform final Fabrikam acceptance&quot;
+    ],
+    &quot;blocked_checks_are_not_passes&quot;: true,
+    &quot;avoid_concurrent_writers&quot;: true,
+    &quot;no_automatic_pr_merge&quot;: true
+  }
+}</pre></details></section>
+<section aria-labelledby="reviews"><h2 id="reviews">Prior review findings</h2>
+<details><summary>Documentation changes address 16 recorded observations; reviewer recheck remains pending</summary><ul><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379134951">The `</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135022">The status card shows PASS for Q1+Q2, but this PR has no test change, run ID, or evidence to support it</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135070">The &quot;~9 seconds&quot; login cost is not measured</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135123">The stray `&lt;/p&gt;` on line 168 should be `&lt;/div&gt;`</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135169">The footer exposes a local Windows profile path (C:\Users\john\), which reveals a personal username and points at files that are not in the repo</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135225">The PR description says this PR updates DECISIONS</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135276">This guidance is technically wrong</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379234653">The subtitle says all five answers are based on &quot;live test results&quot;, but the status card says Q1 and Q2 are NOT VERIFIED with a rerun pending, and Q1 and Q2 rely on the test runs that have not yet been repeated</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305721">The PR description says this change &quot;Updates DECISIONS</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305809">These lines state the Data Import cause as settled</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305886">The cascade range is wrong for a 12-report suite</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305972">This section still asks the user to decide Q1-Q5, but `answers-next-steps</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306030">The `&lt;strong&gt;` element is closed with `&lt;/span&gt;`, which is malformed HTML</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306089">Same mismatched tag problem: `&lt;strong&gt;` is closed with `&lt;/span&gt;`</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306153">Question 5 now has two options marked &quot;Recommended&quot; (option 1 at line 291 and option 2 here)</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li><li><a href="https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306240">The `C:\\Users\\john\\</a><br>Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.</li></ul></details></section>
+<section aria-labelledby="validation"><h2 id="validation">Consolidation validation</h2><ul><li><strong>PASS</strong> — Doctor readiness regression: PowerShell AST parse and three offline mocked cases: blocked prerequisites exit 2, unreachable environment exit 1, missing secrets exit 1. No network or Azure calls.</li><li><strong>PASS</strong> — Standalone report interaction: Six status filters, 11 planned-point rows, parseable/copyable handover JSON, local links and anchors checked; no browser errors.</li><li><strong>PASS</strong> — Desktop and mobile report: Headless Chromium at widths 1280 and 390; screenshots inspected and no horizontal overflow.</li><li><strong>PASS</strong> — Source and shape consistency: Deterministic regeneration, unique plan IDs, six journey headings and four feature-map headings; no host-only visualization API required.</li><li><strong>NOT RUN</strong> — Tenant verification: Consolidation used existing run evidence only; it does not create new Contoso or Fabrikam acceptance proof.</li></ul></section>
+<footer>Dated audit snapshot; PR and runtime states are not updated automatically. Rebuild with <code>python scripts/render-progress.py</code> after updating <code>consolidation-status.json</code>. Source spec revision: 2946d8e.</footer>
+</main>
+<script>
+(() => {
+  const select = document.getElementById('status-filter');
+  const points = Array.from(document.querySelectorAll('#points .point'));
+  const count = document.getElementById('visible-count');
+  select.addEventListener('change', () => {
+    let visible = 0;
+    for (const point of points) {
+      point.hidden = select.value !== 'all' && point.dataset.status !== select.value;
+      if (!point.hidden) visible += 1;
+    }
+    count.textContent = `${visible} of ${points.length} planned points`;
+  });
+  document.getElementById('copy-handover').addEventListener('click', async () => {
+    const status = document.getElementById('copy-status');
+    const text = document.getElementById('agent-state').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      status.textContent = ' Handover copied.';
+    } catch (_) {
+      status.textContent = ' Clipboard unavailable; select the text below or download the status JSON.';
+    }
+  });
+})();
+</script></body></html>

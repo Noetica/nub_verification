@@ -5,6 +5,13 @@ Every verification run writes a result page here. Sarah's stand-up tester format
 pinned failures that stay visible. The verification runs extend it with a run ID and
 links to evidence.
 
+This is a format example, not a fresh test result. Record journey and expected-value
+commit IDs, tool versions, relevant non-secret settings, and every retry/partial run
+as well as the deployed product builds. In this public repository, commit sanitized
+summaries; keep authenticated browser traces, videos and settings in approved restricted
+run storage and link them for authorized reviewers. An evidence filename alone is not
+proof that the file exists or is retained.
+
 ## Result page format
 
 ```text
@@ -34,6 +41,8 @@ results/
 **Deployed builds:** Report Manager webapp: v2610.2845.01; Reports API: v2610.2837.02
 **Environment:** Contoso (dev)  | **Persona:** admin
 **Journey:** J1 Campaign Lifecycle  | **Maps:** daily-outbound-interval
+**Journey / expected-values revisions:** <commit> / <commit>
+**Tool versions / settings / retries:** <tool commits and versions>; <non-secret settings>; <partial run or retry details>
 
 ## Failures that can't be hidden
 
@@ -60,6 +69,11 @@ results/
   "journey": "J1 Campaign Lifecycle",
   "environment": "contoso",
   "persona": "admin",
+  "journey_revision": "<commit>",
+  "expected_values_revision": "<commit>",
+  "tool_versions": { "ReportManager.E2E": "<commit>", "Playwright": "<version>" },
+  "relevant_settings": {},
+  "execution": { "partial": false, "retries": [] },
   "deployed_builds": {
     "nub_web_reportmanager": "v2610.2845.01",
     "nub_api_reports": "v2610.2837.02"

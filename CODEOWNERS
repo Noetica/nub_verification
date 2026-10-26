@@ -1,16 +1,14 @@
-# Code owners
+# Repository collaborators verified 2026-10-26; replaces ineffective placeholders.
+# Verification-curated content
+/maps/ @KimConstantine @sandramaced
+/journeys/ @KimConstantine @sandramaced
+/results/ @KimConstantine @sandramaced
 
-Verification-curated content:
-maps/ @kim @sandra
-journeys/ @kim @sandra
-results/ @kim @sandra
+# Technical tooling and agent instructions
+/tools/ @HeyGirardi
+/AGENTS.md @HeyGirardi
+/.agents/ @HeyGirardi
+/.claude/ @HeyGirardi
 
-Harness scripts (tools/):
-tools/ @john-girardi
-
-Skill files (AGENTS.md, .claude/):
-AGENTS.md @john-girardi
-.claude/ @john-girardi
-
-Sarah's stand-up tester integration:
-tools/doctor/ @sarah-hedley
+# Consult Sarah before changing her stand-up integration
+/tools/doctor/ @Sarah461-sys

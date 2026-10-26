@@ -5,11 +5,14 @@ description: Scheduled maintenance pass — drives every feature map entry, ends
 
 # Maintain verification maps
 
-Adapted from pstack's `maintain-verification-skill` for the Hermes/cron context.
+Future guidance only. No maintenance schedule is configured or authorized by ENG-824.
+Unattended scheduled runs are outside the current PoC. Resume this work only under
+a separate request after the core verification path is proven.
 
 ## When
 
-Runs weekly (or daily for the active track). Set via the `cronjob` tool:
+Possible future cadence: weekly. The following is historical proposal syntax, not
+an installed schedule or an instruction to create one during this task:
 
 ```bash
 cronjob action=create name=mub-maintenance-run schedule="every sunday 3am" \

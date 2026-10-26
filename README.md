@@ -1,58 +1,53 @@
 # nub_verification
 
-The verification team's repository for maps, journeys, and the tools that drive them.
-Owned by the verification team. Maps and journeys are written in plain words; agents
-keep them honest, humans keep the verdict.
+The verification team's home for plain-language feature maps, journeys and evidence.
+Sandra and Kim describe a check; an agent selects existing tools and reports what it
+could prove. Humans decide the verdict and move the Jira card.
 
-## Directory structure
+## Current state
 
-```
-AGENTS.md                           # The verification skill: Connect, Doctor, Drive, Evidence, Cleanup
-.claude/
-  skills/
-    scenario/SKILL.md               # "Test ENG-nnn please, Claude" — the entry point
-    verify-reportmanager/SKILL.md   # Report Manager verification skill (product-specific)
-maps/
-  report-manager/
-    README.md                       # Feature map index + conventions
-    daily-outbound-interval.md      # One file per feature
-    outbound-outcome.md
-    ...                             # (12 reports)
-  campaign-manager/                 # (future)
-  user-management/                  # (future — Angular upgrade target)
-journeys/
-  campaign-lifecycle.md             # J1: the first journey
-  ...                               # (J2-J9 to follow)
-tools/
-  doctor/                           # Is-Fabrikam-worth-testing checks
-  db/                               # Named read-only query scripts
-  report/                           # Report workbook parser
-results/
-  README.md                         # The run result format
-environments/
-  fabrikam.md                       # URLs, tenant, reserved resources, credential sources
-CODEOWNERS                        # Kim and Sandra for maps/ and journeys/
-```
+The PoC scaffold and a preliminary Contoso run exist. The campaign journey, readiness
+integration and database tools are unfinished. No accepted Fabrikam run is recorded.
+Tests run on Contoso first; Fabrikam supplies final implementation evidence and verification.
 
-## How to use
+- Open [the consolidated progress report](progress-summary.html) in a browser for status by plan point.
+- Read [DECISIONS.md](DECISIONS.md) for settled scope and [HANDOVER.md](HANDOVER.md) to resume work.
+- [consolidation-status.json](consolidation-status.json) is the report's dated, machine-readable snapshot.
+- The canonical agreement is the ENG-824 spec and grill record in `nub_specs`; the handover pins their revision.
 
-1. **Run a card:** `claude -p "Test ENG-645 please, Claude"` — the scenario skill reads
-   the card's How to verify, finds the journeys and feature maps it names, and runs them.
-2. **Browse the maps:** open `maps/<product>/README.md` and pick a feature file.
-3. **Scheduled maintenance:** a cron job drives every feature and flags drift (see
-   `tools/doctor/` for the readiness check).
+## Use the existing PoC
 
-## Rules
+Ask the agent `Test ENG-645 please` or use Claude Code's `/test ENG-645` command.
+The shared scenario instructions live in [.agents/skills/scenario/SKILL.md](.agents/skills/scenario/SKILL.md);
+the Claude skill and command both point there. This is a drafted workflow, not yet an
+evidenced end-to-end handover to Sandra and Kim.
 
-- Non-production tenants and synthetic data only. No secrets in any repo.
-- Expected values are written before the run, from product rules, never from the system.
-- One deliberately failing case per journey.
-- Agents never edit product code, never change expected values to make a result pass,
-  never move a Jira card. Humans keep the verdict.
+Read [AGENTS.md](AGENTS.md) first. A failed or blocked readiness check stops driving.
+Missing data, tools, expected values or build identities must remain visible in the result.
 
-## Related
+## Contents
 
-- [Whole-Journey Verification](https://claude.ai/artifact/AWFz8bnLQbqUELvjUfTBP6) — the vision
-- [nub_specs/verification](https://github.com/Noetica/nub_specs/tree/main/verification) — the plan
-- [pstack: create-verification-skill](https://github.com/cursor/plugins/tree/main/pstack/skills/create-verification-skill) — the skill format
-- ENG-550: the overall shape · ENG-645: the Report Manager pilot
+| Path | What exists |
+| --- | --- |
+| `maps/report-manager/` | One detailed report map with preliminary View evidence; eleven draft stubs |
+| `journeys/` | Shared template and J1 campaign lifecycle draft for Kim/Sandra |
+| `environments/fabrikam.md` | Environment and credential sources; reserved resources pending Kim |
+| `tools/doctor/fabrikam.ps1` | Incomplete readiness check; blocked checks return a nonzero exit code |
+| `tools/db/README.md` | Four agreed query interfaces; scripts and verified mappings still TODO |
+| `results/` | Result format and preserved Contoso baseline, with a reconciliation audit note |
+| `.agents/skills/scenario/` | Shared scenario instructions; Claude adapter under `.claude/` |
+
+No scheduled maintenance is configured by this repository. The maintenance skill is
+future guidance, outside the current PoC implementation.
+
+## Boundaries
+
+Use non-production tenants and synthetic data. Resolve secrets at runtime; keep them
+out of prompts and commits. Use read-only database tools. Change expected values only
+with human agreement. During verification, report product failures rather than editing
+product code. Keep the evidence after cleanup.
+
+ENG-824 owns this home, the first map/journey, the scenario entry point and four minimum
+J1 database reads. ENG-645 owns Report Manager suite activation/expansion; PR #267 is
+open. ENG-823/ENG-826 own new TEFT capabilities. GrokBot, the Angular upgrade, test
+isolation refactoring, database writes and unattended schedules are outside this work.

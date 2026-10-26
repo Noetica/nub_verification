@@ -4,9 +4,8 @@
   Doctor for Fabrikam / Contoso Report Manager — the read-only "is it worth testing?" check.
 
 .DESCRIPTION
-  Wraps Sarah's stand-up tester (ENG-809, nub_devops Powershell/Stand Up/) plus the
-  Report Manager build check (ENG-609). Built from Stream B step B3: "built from
-  Sarah's stand-up tester."
+  Draft readiness check for Stream B B3. Sarah's stand-up integration and exact
+  build comparison are pending. Blocked prerequisites return exit 2, not GO.
 
   Run this BEFORE any verification pass. It says "go" or "stop, because...".
 
@@ -14,7 +13,7 @@
   'contoso' (default) or 'fabrikam'
 
 .PARAMETER Persona
-  'admin' (default). The 'user' persona TOTP is known-bad.
+  'admin' (default), as used by the recorded Contoso baseline.
 
 .EXAMPLE
   pwsh tools/doctor/fabrikam.ps1 -Environment contoso -Persona admin
@@ -27,7 +26,11 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$kvName = $env:E2E_KEYVAULT_NAME ?: 'kv-noetica-dev-uksouth'
+$kvName = if ([string]::IsNullOrWhiteSpace($env:E2E_KEYVAULT_NAME)) {
+  'kv-noetica-dev-uksouth'
+} else {
+  $env:E2E_KEYVAULT_NAME
+}
 $results = @()
 
 # 1. Environment reachable
@@ -43,14 +46,9 @@ try {
   $results += [PSCustomObject]@{ Check='Environment reachable'; Result='FAIL'; Detail=$_.Exception.Message }
 }
 
-# 2. Build identity (Sarah's deploy check, ENG-609)
-#    TODO: call Sarah's deploy check or the /api/version endpoint
-try {
-  $verResp = Invoke-RestMethod -Uri "$($envConfig.BaseUrl)/api/version" -UseBasicParsing -TimeoutSec 10
-  $results += [PSCustomObject]@{ Check='Build identity'; Result='PASS'; Detail="Version: $($verResp.version)" }
-} catch {
-  $results += [PSCustomObject]@{ Check='Build identity'; Result='BLOCKED'; Detail="Could not reach /api/version: $($_.Exception.Message)" }
-}
+# 2. Build identity is not integrated. A reachable page or guessed version URL is
+#    insufficient: compare the exact website/API builds with the card before driving.
+$results += [PSCustomObject]@{ Check='Build identity'; Result='BLOCKED'; Detail='Verified deployed-build source and expected-build comparison are not integrated' }
 
 # 3. Secrets present in Key Vault
 foreach ($secretName in @("zautotest-$Persona-password", "zautotest-$Persona-totp")) {
@@ -66,20 +64,10 @@ foreach ($secretName in @("zautotest-$Persona-password", "zautotest-$Persona-tot
   }
 }
 
-# 4. Sarah's stand-up tester conformance (ENG-809) — calls her scripts, doesn't copy them
-#    Stream B B3: "built from Sarah's stand-up tester"
-try {
-  $standupScript = "C:\repos\nub_devops\Powershell\Stand Up\Test-TenantFunctional.ps1"
-  if (Test-Path $standupScript) {
-    # Run the conformance stage only
-    $conformance = & $standupScript -Environment $Environment -Only Conformance -Persona $Persona 2>&1
-    $results += [PSCustomObject]@{ Check='Sarah conformance'; Result='PASS'; Detail='See stand-up tester output' }
-  } else {
-    $results += [PSCustomObject]@{ Check='Sarah conformance'; Result='BLOCKED'; Detail="Stand-up tester not found at $standupScript — run on a machine with nub_devops checked out" }
-  }
-} catch {
-  $results += [PSCustomObject]@{ Check='Sarah conformance'; Result='BLOCKED'; Detail=$_.Exception.Message }
-}
+# 4. Integration is pending. The current Test-TenantFunctional.ps1 uses -SettingsFile
+#    and supported -Only steps; it has no -Environment, -Persona or Conformance step.
+#    Do not report PASS based on a script existing or ignoring its result.
+$results += [PSCustomObject]@{ Check='Sarah stand-up integration'; Result='BLOCKED'; Detail='Supported settings/step invocation and result interpretation are not integrated; see HANDOVER.md' }
 
 # 5. Reserved resources (Kim names these; check they exist)
 #    Stream B B3: "the reserved campaign and agents exist, and the runner answers"
@@ -97,8 +85,8 @@ if ($failed -gt 0) {
   Write-Host "VERDICT: STOP — $($failed) check(s) failed. Do not drive." -ForegroundColor Red
   exit 1
 } elseif ($blocked -gt 0) {
-  Write-Host "VERDICT: CAUTION — $($blocked) check(s) blocked. Review before driving." -ForegroundColor Yellow
-  exit 0
+  Write-Host "VERDICT: STOP — $($blocked) prerequisite(s) blocked. Do not drive." -ForegroundColor Yellow
+  exit 2
 } else {
   Write-Host "VERDICT: GO — all checks passed. Safe to drive." -ForegroundColor Green
   exit 0
