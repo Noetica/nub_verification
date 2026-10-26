@@ -40,9 +40,9 @@ and new TEFT tooling are outside this implementation.
    history, state/recycle semantics and outcome mapping. The README's candidate
    `Phoenix_*` tables are not an approved query design. Then implement only the four
    parameterized read tools. A matching Contoso read-only connection is also missing.
-3. Check GitHub's CODEOWNERS errors endpoint after the consolidation branch is pushed.
-   The earlier placeholders are replaced with verified repository collaborators
-   `KimConstantine`, `sandramaced`, `HeyGirardi` and `Sarah461-sys`; no permissions changed.
+3. Preserve the verified CODEOWNERS routing. GitHub returned no branch errors after
+   push for `KimConstantine`, `sandramaced`, `HeyGirardi` and `Sarah461-sys`;
+   no permissions changed. Recheck if account access or ownership rules change.
 4. Complete Doctor's exact-build checks and Sarah integration using her current
    `-SettingsFile` / supported `-Only` signature and actual result contract. The current
    skeleton deliberately exits 2 for blockage; script existence is not readiness.

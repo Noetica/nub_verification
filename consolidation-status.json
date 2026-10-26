@@ -7,10 +7,10 @@
   "snapshot_notice": "Dated audit snapshot; PR and runtime states are not updated automatically.",
   "sources": {
     "spec": {
-      "commit": "2946d8e26602371ee02af32cd6611e35b2c3568e",
+      "commit": "d3d504a20e2c536d3da94565eac3ad7059555747",
       "status": "draft",
-      "url": "https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md",
-      "grill_url": "https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md"
+      "url": "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md",
+      "grill_url": "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md"
     },
     "hermes": {
       "session_id": "local-b0d496ad7076604228db7bbacda5c75b9d6c95f257bd137a954cf5b0e255ca0d",
@@ -21,7 +21,8 @@
       "commits": [
         "d3db8f9",
         "81bdf7d",
-        "2946d8e"
+        "2946d8e",
+        "d3d504a"
       ],
       "outcome": "Scope split, Contoso-to-Fabrikam sequence, missing-query investigation and consolidated evidence corrections retained."
     },
@@ -30,7 +31,8 @@
       "source_commit": "b4ecc096b6cba259eb11da02d18c7982a63e1405",
       "pr": "https://github.com/Noetica/nub_verification/pull/2",
       "pr_state": "OPEN",
-      "review_decision": "CHANGES_REQUESTED"
+      "review_decision": "CHANGES_REQUESTED",
+      "reconciliation_commit": "b6a9945b0a81141658a814be985079a13b5875ef"
     },
     "report_manager": {
       "commit": "8d55c0073d8ae332af4476fe879b5c3328b9b00a",
@@ -71,8 +73,8 @@
       "summary": "Scope and test sequence are settled; the four database reads remain included. Approval and research prerequisites are still outstanding.",
       "evidence": [
         "DECISIONS.md",
-        "https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md",
-        "https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md"
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md",
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md"
       ],
       "next_action": "Verify query mappings and finish the grill before formal implementation approval.",
       "owner": "John",
@@ -125,7 +127,7 @@
       "summary": "Agreed scope, with no scripts implemented. The previous generic table names were not grounded in the canonical schema.",
       "evidence": [
         "tools/db/README.md",
-        "https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md"
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md"
       ],
       "next_action": "Verify identifiers, joins, state meanings and attempt-history coverage, then implement only the four selected-record reads.",
       "owner": "John",
@@ -176,7 +178,7 @@
       "summary": "No accepted final Fabrikam result is recorded.",
       "evidence": [
         "environments/fabrikam.md",
-        "https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md"
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md"
       ],
       "next_action": "After Contoso checks and Kim confirmation, run final Fabrikam verification with builds, videos, traces and agreed outcomes.",
       "owner": "John; Kim confirms fixtures",
@@ -335,6 +337,11 @@
       "detail": "Deterministic regeneration, unique plan IDs, six journey headings and four feature-map headings; no host-only visualization API required."
     },
     {
+      "name": "GitHub ownership and branch reconciliation",
+      "status": "PASS",
+      "detail": "After push GitHub reports zero CODEOWNERS errors and PR #2 MERGEABLE; the existing changes-requested review remains pending."
+    },
+    {
       "name": "Tenant verification",
       "status": "NOT RUN",
       "detail": "Consolidation used existing run evidence only; it does not create new Contoso or Fabrikam acceptance proof."
@@ -346,8 +353,8 @@
       "DECISIONS.md",
       "consolidation-status.json"
     ],
-    "spec_url": "https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md",
-    "grill_url": "https://github.com/Noetica/nub_specs/blob/2946d8e26602371ee02af32cd6611e35b2c3568e/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md",
+    "spec_url": "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/spec.md",
+    "grill_url": "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md",
     "branch": "add-answers-artifact",
     "existing_product_pr": "Noetica/nub_web_reportmanager#267",
     "do_not_reask": [
