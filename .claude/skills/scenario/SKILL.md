@@ -48,6 +48,13 @@ Or in the Claude Code interactive session:
    - Database reads: named queries in `tools/db/` (read-only).
    - TEFT calls: the runner API (`POST /runner/api/queue`,
      `GET /runner/api/executions/{id}`) — or Stream A's `teft` command when it lands.
+     Send the shared API key in an `X-Api-Key` header on every call to the runner or to TEFT
+     (ENG-825): without it they answer HTTP 401. Read it at run time with this one command,
+     and never write it into a file, result page or Jira comment:
+
+     ```
+     az keyvault secret show --vault-name kv-noetica-dev-29641d05 --name teft-api-key --query value -o tsv
+     ```
    - Each step captures a trace and screenshot via `PageObservation.RunAsync`.
      Video recording is not yet wired into the harness (see
      `tools/fix-escalation-gap.md` Part A).
