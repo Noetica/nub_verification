@@ -46,9 +46,10 @@ Or in the Claude Code interactive session:
      using the test methods named in each feature map entry (e.g.
      `Export_DailyOutboundInterval_ExcelDownloads`).
    - Database reads: named queries in `tools/db/` (read-only).
-   - TEFT calls: the runner API (`POST /runner/api/queue`,
-     `GET /runner/api/executions/{id}`) — or Stream A's `teft` command when it lands.
-     Send the shared API key in an `X-Api-Key` header on every call to the runner or to TEFT
+   - TEFT calls: use the `teft` skill (`.claude/skills/teft/SKILL.md`), which places the call
+     and returns its verdict and checks. If `teft` isn't installed, call the runner API directly
+     (`POST /runner/api/queue`, `GET /runner/api/executions/{id}`).
+     Either way, send the shared API key in an `X-Api-Key` header on every call to the runner or to TEFT
      (ENG-825): without it they answer HTTP 401. Read it at run time with this one command,
      and never write it into a file, result page or Jira comment:
 
