@@ -1,0 +1,13 @@
+test_agreed_document_shapes_and_plan_ids (test_render_progress.ReportTests.test_agreed_document_shapes_and_plan_ids) ... ok
+test_baseline_mutations_change_the_narrative (test_render_progress.ReportTests.test_baseline_mutations_change_the_narrative) ... ok
+test_generated_report_matches_source (test_render_progress.ReportTests.test_generated_report_matches_source) ... ok
+test_header_and_spec_status_follow_source (test_render_progress.ReportTests.test_header_and_spec_status_follow_source) ... ok
+test_historical_labels_are_readable_paraphrases (test_render_progress.ReportTests.test_historical_labels_are_readable_paraphrases) ... ok
+test_pr_status_mutations_change_the_narrative (test_render_progress.ReportTests.test_pr_status_mutations_change_the_narrative) ... ok
+test_source_text_is_escaped (test_render_progress.ReportTests.test_source_text_is_escaped) ... ok
+test_validation_exposes_supporting_evidence (test_render_progress.ReportTests.test_validation_exposes_supporting_evidence) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.047s
+
+OK

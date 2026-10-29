@@ -1,0 +1,34 @@
+{
+  "scope": "Standalone report validation; no live tenant tests",
+  "base_commit": "16072edc7ce93e0c5ac7c89da68540f5a64eb389",
+  "working_tree_modified": true,
+  "node_version": "v24.14.1",
+  "status": "PASS",
+  "checks": [
+    "All six status filters match the JSON planned-point counts",
+    "Handover JSON fidelity and clipboard success/denial paths",
+    "Desktop/mobile viewport layout without horizontal overflow",
+    "Local evidence links/anchors exist; no browser script errors"
+  ],
+  "screenshots": [
+    {
+      "path": "results/pr2-feedback-16072ed/report-desktop.png",
+      "width": 1280,
+      "height": 920
+    },
+    {
+      "path": "results/pr2-feedback-16072ed/report-mobile.png",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "browser_version": "145.0.7632.6",
+  "source_sha256": {
+    "consolidation-status.json": "8d7f75b92f20efe6118be644cd458edcfc121380092a0589cae3fe4e73f9abaa",
+    "progress-summary.html": "5560a659cfd5cff04935dd18beb4cc27aa652db17aa8126814fed98eaf1e3a22",
+    "scripts/render-progress.py": "deb15bb4164db93563d68ef1a7c23085232ec39b5bcf4c2c19fbf67dac2dc80d",
+    "tests/progress-report.test.cjs": "ee367560fc40cb8e2f9f0ac9cae4e83dbc58c592792439d337eab30420cf2ba9",
+    "tests/test_render_progress.py": "238311b538df74b8926b89caff1a45b77aadf772593731f32d3eb1a1b3de823f"
+  },
+  "completed_at_utc": "2026-10-29T10:35:27.307Z"
+}

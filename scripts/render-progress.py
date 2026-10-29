@@ -58,10 +58,15 @@ def render(data):
         f'<li>{link(x["url"], x["issue"])}<br>{esc(x["disposition"])}</li>'
         for x in data["review_findings"]
     )
-    validation = "".join(
-        f'<li><strong>{esc(x["status"])}</strong> — {esc(x["name"])}: {esc(x["detail"])}</li>'
-        for x in data["validation"]
-    ) or '<li>Consolidation checks have not yet been recorded.</li>'
+    validation_rows = []
+    for item in data["validation"]:
+        evidence = " · ".join(link(target) for target in item.get("evidence", []))
+        evidence_html = f'<br>{evidence}' if evidence else ""
+        validation_rows.append(
+            f'<li><strong>{esc(item["status"])}</strong> — {esc(item["name"])}: '
+            f'{esc(item["detail"])}{evidence_html}</li>'
+        )
+    validation = "".join(validation_rows) or '<li>Consolidation checks have not yet been recorded.</li>'
     agent_state = {
         "issue": data["issue"],
         "observed_at_utc": data["observed_at_utc"],
@@ -78,12 +83,19 @@ def render(data):
     spec = data["sources"]["spec"]
     product = data["sources"]["report_manager"]
     verification = data["sources"]["verification"]
+    documentation = data["sources"]["merged_documentation_pr"]
+    documentation_state = "MERGED" if documentation.get("merged_at") else "NOT RECORDED AS MERGED"
+    review_state = verification.get("review_decision") or "not recorded"
+    consolidation = next(point for point in data["planned_points"] if point["id"] == "C0")
+    baseline = data["baseline"]
+    smoke = baseline["smoke"]
+    suite = baseline["verification"]
     return f'''<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ENG-824 · Consolidated progress</title>
+<title>{esc(data["issue"])} · Consolidated progress</title>
 <style>
 :root {{ color-scheme:light dark; --bg:light-dark(#f7f7f4,#171b20); --fg:light-dark(#17212b,#edf0f3); --muted:light-dark(#465766,#b6c1cb); --line:light-dark(#c9d1d8,#46525c); --surface:light-dark(#ffffff,#212830); --link:light-dark(#165d9c,#8ac8ff); }}
 * {{ box-sizing:border-box; }}
@@ -120,14 +132,14 @@ footer {{ margin-top:40px; padding-top:20px; border-top:1px solid var(--line); f
 </head>
 <body><main>
 <header>
-<div class="eyebrow">ENG-824 · {esc(data["observed_at_utc"])}</div>
+<div class="eyebrow">{esc(data["issue"])} · {esc(data["observed_at_utc"])}</div>
 <h1>{esc(data["title"])}</h1>
 <p class="lead">{esc(data["summary"])}</p>
-<p>Consolidation of the two sessions is complete. Product implementation and acceptance remain at the stages below.</p>
+<p>Consolidation status: <strong>{esc(LABELS[consolidation["status"]])}</strong>. Delivery stages are listed below.</p>
 <nav aria-label="Report sections"><a href="#plan">By planned point</a><a href="#findings">Findings from each workflow</a><a href="#evidence">Evidence</a><a href="#handover">Agent handover</a></nav>
 </header>
 <section aria-labelledby="agreed"><h2 id="agreed">What is agreed</h2><ul>{decisions}</ul>
-<p>{link(spec["url"],"Canonical spec")} · {link(spec["grill_url"],"Grill record")} · status: <strong>draft, not approved</strong></p></section>
+<p>{link(spec["url"],"Canonical spec")} · {link(spec["grill_url"],"Grill record")} · status: <strong>{esc(spec["status"])}</strong></p></section>
 <section aria-labelledby="workflows"><h2 id="workflows">What each session contributed</h2>
 <p><strong>Hermes:</strong> {esc(data["sources"]["hermes"]["outcome"])}</p>
 <p><strong>Codex:</strong> {esc(data["sources"]["codex"]["outcome"])}</p>
@@ -139,17 +151,19 @@ footer {{ margin-top:40px; padding-top:20px; border-top:1px solid var(--line); f
 <section aria-labelledby="gates"><h2 id="gates">Remaining prerequisites</h2><ul>{prerequisites}</ul>
 <p>These are delivery gates, not new questions about the already agreed scope.</p></section>
 <section aria-labelledby="evidence"><h2 id="evidence">What the evidence actually shows</h2>
-<p><strong>Contoso baseline, 26 Oct at 13:05 UTC: overall verification failed.</strong> Smoke: 1 passed test. Verification: 2 passed, 5 failed and 15 unexecuted. The Daily Outbound grid observation was inside a test that later failed; deployed builds were unknown.</p>
-<p>{link("results/20261026T130500Z-verification-run/audit.md","Baseline audit and count clarification")}. No live tenant tests were rerun during consolidation.</p>
-<p>Report Manager {link(product["pr"],"PR #267")} is <strong>open</strong>; its {link(product["run"],"smoke preflight failed on missing configuration")}. That confirms visible blockage, not a passing suite or final video/trace proof.</p>
-<p>The separate {link(data["sources"]["merged_documentation_pr"]["url"],"verification documentation PR #1")} merged. This {link(verification["pr"],"consolidation PR #2")} still needs re-review.</p></section>
+<p><strong>{esc(baseline["environment"].title())} baseline {esc(baseline["run_id"])}: overall verification {esc(baseline["verdict"])}.</strong>
+Smoke: {esc(smoke["passed"])} of {esc(smoke["total"])} passed. Verification: {esc(suite["passed"])} passed, {esc(suite["failed"])} failed and {esc(suite["unexecuted"])} unexecuted ({esc(suite["executed"])} of {esc(suite["total"])} executed).
+Deployed builds: {esc(baseline["deployed_builds"])}. Grid observation counts as a standalone passed test: {"yes" if baseline["grid_observation_is_test_pass"] else "no"}. Final acceptance: {"yes" if baseline["final_acceptance"] else "no"}.</p>
+<p>{link(baseline["audit_path"],"Baseline audit and count clarification")}. {esc(baseline["consolidation_test_note"])}</p>
+<p>{link(product["pr"],"Report Manager PR")} — recorded state: <strong>{esc(product["pr_state"])}</strong>; {link(product["run"],"recorded smoke result")}: {esc(product["smoke"])}.</p>
+<p>{link(documentation["url"],"Verification documentation PR")} — recorded state: <strong>{esc(documentation_state)}</strong>. {link(verification["pr"],"Consolidation PR")} — recorded state: <strong>{esc(verification["pr_state"])}</strong>; review decision: <strong>{esc(review_state)}</strong>.</p></section>
 <section aria-labelledby="handover"><h2 id="handover">Agent handover</h2>
 <p>{link("HANDOVER.md","Read the resume sequence")} · {link("DECISIONS.md","Read settled decisions")} · <a href="consolidation-status.json" download>Download status JSON</a></p>
 <details><summary>Open agent-optimized source, decisions, gates and task state</summary>
 <button id="copy-handover" type="button">Copy handover JSON</button><span id="copy-status" role="status" aria-live="polite"></span>
 <pre id="agent-state">{agent_json}</pre></details></section>
 <section aria-labelledby="reviews"><h2 id="reviews">Prior review findings</h2>
-<details><summary>Documentation changes address {len(data["review_findings"])} recorded observations; reviewer recheck remains pending</summary><ul>{reviews}</ul></details></section>
+<details><summary>{len(data["review_findings"])} historical observations; recorded review decision: {esc(review_state)}</summary><ul>{reviews}</ul></details></section>
 <section aria-labelledby="validation"><h2 id="validation">Consolidation validation</h2><ul>{validation}</ul></section>
 <footer>{esc(data["snapshot_notice"])} Rebuild with <code>python scripts/render-progress.py</code> after updating <code>consolidation-status.json</code>. Source spec revision: {esc(spec["commit"][:7])}.</footer>
 </main>

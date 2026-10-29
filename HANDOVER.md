@@ -1,5 +1,9 @@
 # ENG-824 agent handover
 
+The ordered execution queue is [ENG-824-TASKS.md](ENG-824-TASKS.md). Update it as
+evidence advances; the published spec and grill remain authoritative for scope and
+decisions.
+
 Read `DECISIONS.md`, `consolidation-status.json` and the canonical spec/grill record
 before editing. `progress-summary.html` is the human-readable view of that snapshot.
 Hermes session `local-b0d496ad7076604228db7bbacda5c75b9d6c95f257bd137a954cf5b0e255ca0d`

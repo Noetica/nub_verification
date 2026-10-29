@@ -313,33 +313,55 @@
     "raw_trx_sha256": {
       "e2e-smoke.trx": "daf62d7597c16acc25da62f8e181ca63e8377a6c55702a9ded70071713630635",
       "e2e-verification.trx": "c4cf76c07a92c5fa6816122cd9bfc074930fcd1cdea5fd198831e4c29fed5874"
-    }
+    },
+    "audit_path": "results/20261026T130500Z-verification-run/audit.md",
+    "consolidation_test_note": "No live tenant tests were rerun during consolidation."
   },
   "validation": [
     {
       "name": "Doctor readiness regression",
       "status": "PASS",
-      "detail": "PowerShell AST parse and three offline mocked cases: blocked prerequisites exit 2, unreachable environment exit 1, missing secrets exit 1. No network or Azure calls."
+      "detail": "PowerShell AST parse and three offline mocked cases: blocked prerequisites exit 2, unreachable environment exit 1, missing secrets exit 1. No network or Azure calls.",
+      "evidence": [
+        "tests/doctor-exit-codes.ps1",
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md#2026-10-26--g-009-published-consolidation-validation"
+      ]
     },
     {
       "name": "Standalone report interaction",
       "status": "PASS",
-      "detail": "Six status filters, 11 planned-point rows, parseable/copyable handover JSON, local links and anchors checked; no browser errors."
+      "detail": "Six status filters, 11 planned-point rows, parseable/copyable handover JSON, local links and anchors checked; no browser errors.",
+      "evidence": [
+        "tests/progress-report.test.cjs",
+        "results/pr2-feedback-16072ed/validation.json"
+      ]
     },
     {
       "name": "Desktop and mobile report",
       "status": "PASS",
-      "detail": "Headless Chromium at widths 1280 and 390; screenshots inspected and no horizontal overflow."
+      "detail": "Headless Chromium at widths 1280 and 390; screenshots inspected and no horizontal overflow.",
+      "evidence": [
+        "results/pr2-feedback-16072ed/report-desktop.png",
+        "results/pr2-feedback-16072ed/report-mobile.png",
+        "results/pr2-feedback-16072ed/validation.json"
+      ]
     },
     {
       "name": "Source and shape consistency",
       "status": "PASS",
-      "detail": "Deterministic regeneration, unique plan IDs, six journey headings and four feature-map headings; no host-only visualization API required."
+      "detail": "Deterministic regeneration, unique plan IDs, six journey headings and four feature-map headings; no host-only visualization API required.",
+      "evidence": [
+        "tests/test_render_progress.py",
+        "results/pr2-feedback-16072ed/unit-tests.txt"
+      ]
     },
     {
       "name": "GitHub ownership and branch reconciliation",
       "status": "PASS",
-      "detail": "After push GitHub reports zero CODEOWNERS errors and PR #2 MERGEABLE; the existing changes-requested review remains pending."
+      "detail": "After push GitHub reports zero CODEOWNERS errors and PR #2 MERGEABLE; the existing changes-requested review remains pending.",
+      "evidence": [
+        "https://github.com/Noetica/nub_specs/blob/d3d504a20e2c536d3da94565eac3ad7059555747/specs/2026/eng-824-nub-verification-checks-and-first-journey-map/grill-record.md#2026-10-26--g-009-published-consolidation-validation"
+      ]
     },
     {
       "name": "Tenant verification",
@@ -378,112 +400,112 @@
     {
       "id": 4379134951,
       "path": "answers-next-steps.html",
-      "issue": "The `",
+      "issue": "Preserve line breaks in command examples.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379134951"
     },
     {
       "id": 4379135022,
       "path": "answers-next-steps.html",
-      "issue": "The status card shows PASS for Q1+Q2, but this PR has no test change, run ID, or evidence to support it",
+      "issue": "Avoid successful-test claims without linked run evidence.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135022"
     },
     {
       "id": 4379135070,
       "path": "answers-next-steps.html",
-      "issue": "The \"~9 seconds\" login cost is not measured",
+      "issue": "Avoid unsupported repeated-login timing and TOTP assumptions.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135070"
     },
     {
       "id": 4379135123,
       "path": "answers-next-steps.html",
-      "issue": "The stray `</p>` on line 168 should be `</div>`",
+      "issue": "Use matching tags around the code-block container.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135123"
     },
     {
       "id": 4379135169,
       "path": "answers-next-steps.html",
-      "issue": "The footer exposes a local Windows profile path (C:\\Users\\john\\), which reveals a personal username and points at files that are not in the repo",
+      "issue": "Use repository references instead of a personal profile path.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135169"
     },
     {
       "id": 4379135225,
       "path": "answers-next-steps.html",
-      "issue": "The PR description says this PR updates DECISIONS",
+      "issue": "Match the artifact description and tracked decision files to the actual change.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135225"
     },
     {
       "id": 4379135276,
       "path": "answers-next-steps.html",
-      "issue": "This guidance is technically wrong",
+      "issue": "Use real xUnit APIs with the intended fixture lifetime.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379135276"
     },
     {
       "id": 4379234653,
       "path": "answers-next-steps.html",
-      "issue": "The subtitle says all five answers are based on \"live test results\", but the status card says Q1 and Q2 are NOT VERIFIED with a rerun pending, and Q1 and Q2 rely on the test runs that have not yet been repeated",
+      "issue": "Distinguish planned work from recorded live test results.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379234653"
     },
     {
       "id": 4379305721,
       "path": "answers-next-steps.html",
-      "issue": "The PR description says this change \"Updates DECISIONS",
+      "issue": "Keep the PR description consistent with the consolidated deliverables.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305721"
     },
     {
       "id": 4379305809,
       "path": "answers-next-steps.html",
-      "issue": "These lines state the Data Import cause as settled",
+      "issue": "Keep the Data Import cause unconfirmed until investigated.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305809"
     },
     {
       "id": 4379305886,
       "path": "answers-next-steps.html",
-      "issue": "The cascade range is wrong for a 12-report suite",
+      "issue": "Describe only downstream failures within the twelve-report suite.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305886"
     },
     {
       "id": 4379305972,
       "path": "progress-summary.html",
-      "issue": "This section still asks the user to decide Q1-Q5, but `answers-next-steps",
+      "issue": "Replace conflicting question pages with one current decision source.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379305972"
     },
     {
       "id": 4379306030,
       "path": "progress-summary.html",
-      "issue": "The `<strong>` element is closed with `</span>`, which is malformed HTML",
+      "issue": "Close the first option label with its matching HTML tag.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306030"
     },
     {
       "id": 4379306089,
       "path": "progress-summary.html",
-      "issue": "Same mismatched tag problem: `<strong>` is closed with `</span>`",
+      "issue": "Close the second option label with its matching HTML tag.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306089"
     },
     {
       "id": 4379306153,
       "path": "progress-summary.html",
-      "issue": "Question 5 now has two options marked \"Recommended\" (option 1 at line 291 and option 2 here)",
+      "issue": "Keep resolved tool choices consistent and avoid duplicate recommendations.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306153"
     },
     {
       "id": 4379306240,
       "path": "progress-summary.html",
-      "issue": "The `C:\\\\Users\\\\john\\\\",
+      "issue": "Avoid broken Windows-path excerpts in the generated report.",
       "disposition": "Obsolete page replaced/removed; unsupported implementation claims and advice removed. Re-review remains required.",
       "url": "https://github.com/Noetica/nub_verification/pull/2#discussion_r4379306240"
     }

@@ -20,5 +20,5 @@ and `result.md` are preserved as historical records; this note clarifies their l
   that portable copies exist in this repository. Do not publish raw authenticated
   traces or settings while consolidating this public repository.
 
-See `consolidation-status.json` at the repository root for the source file hashes,
+See `consolidation-status.json` at the repository root for the two raw TRX file hashes,
 the PR snapshots and the next steps. No live tenant tests were rerun in this audit.
