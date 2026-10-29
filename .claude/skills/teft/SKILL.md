@@ -24,14 +24,32 @@ machine, DTMF and so on. `teft` drives both and gives every call a verdict (ENG-
 
 1. The .NET 9 SDK (includes the runtime); the SDK is needed for the `dotnet` install commands below.
 2. The Noetica NuGet feed, if `dotnet nuget list source` doesn't already show
-   `https://nuget.pkg.github.com/Noetica/index.json`. It needs a GitHub token with `read:packages`:
+   `https://nuget.pkg.github.com/Noetica/index.json`. It needs a GitHub personal access token
+   (classic) with `read:packages`. Read the token from a hidden prompt, so it stays out of shell
+   history, and never store it in plain text.
+
+   On Windows, NuGet stores the password encrypted for your user account:
 
    ```powershell
+   $token = [Net.NetworkCredential]::new('', (Read-Host 'GitHub token' -AsSecureString)).Password
    dotnet nuget add source "https://nuget.pkg.github.com/Noetica/index.json" --name NoeticaGPR `
-     --username <GitHub user> --password <token> --store-password-in-clear-text
+     --username <GitHub user> --password $token
+   Remove-Variable token
    ```
 
-3. `dotnet tool install --global NubAutoTeftRunner.Cli`. Later: `dotnet tool update --global NubAutoTeftRunner.Cli`.
+   On macOS and Linux, NuGet can't encrypt it. Add the source without a password, and give the token
+   only to the install or update command:
+
+   ```bash
+   dotnet nuget add source "https://nuget.pkg.github.com/Noetica/index.json" --name NoeticaGPR
+   read -rs GH_PACKAGES_TOKEN
+   NuGetPackageSourceCredentials_NoeticaGPR="Username=<GitHub user>;Password=$GH_PACKAGES_TOKEN" \
+     dotnet tool install --global NubAutoTeftRunner.Cli
+   unset GH_PACKAGES_TOKEN
+   ```
+
+3. `dotnet tool install --global NubAutoTeftRunner.Cli`. Later: `dotnet tool update --global NubAutoTeftRunner.Cli`
+   (on macOS and Linux, with the credential variable as above).
 4. Create the config file in the platform's application-data folder: `%APPDATA%\teft\config.json`
    on Windows, `~/.config/teft/config.json` on Linux (`$XDG_CONFIG_HOME/teft/config.json` when set),
    or `~/Library/Application Support/teft/config.json` on macOS. No key goes in it:
@@ -88,10 +106,14 @@ TEFT host; when it's off, `teft number` says so.
 
 | Verdict | Meaning | What to do |
 |---|---|---|
-| **Pass** | The call completed and every check passed | Report it |
+| **Pass** | The call completed and every requested check passed | Report it, saying which checks ran |
 | **Fail** | The product did something wrong: a check failed, or a call leg never completed | Report it as a failure, with the failing checks |
 | **Blocked** | The test couldn't run: TEFT or the runner was down, or the tenant isn't set up | Report it as blocked, not as a product failure |
 | **NotRun** | A requested check never started | Report which check, and why if the result says |
+
+**A Pass with no checks only proves the call completed.** It says nothing about how the product
+handled the call. To claim a behaviour (for example "the dialler recorded the call as busy"), run the
+call with `--expect` checks for it, and report the result as completed-only when `checks` is empty.
 
 Exit codes: 0 Pass, 1 error (bad input, or the runner refused), 2 tenant refused, 3 verdict not Pass.
 
