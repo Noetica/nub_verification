@@ -22,7 +22,7 @@ machine, DTMF and so on. `teft` drives both and gives every call a verdict (ENG-
 
 ## One-time set-up
 
-1. The .NET 9 runtime.
+1. The .NET 9 SDK (includes the runtime); the SDK is needed for the `dotnet` install commands below.
 2. The Noetica NuGet feed, if `dotnet nuget list source` doesn't already show
    `https://nuget.pkg.github.com/Noetica/index.json`. It needs a GitHub token with `read:packages`:
 
