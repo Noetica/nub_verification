@@ -46,15 +46,11 @@ Or in the Claude Code interactive session:
      using the test methods named in each feature map entry (e.g.
      `Export_DailyOutboundInterval_ExcelDownloads`).
    - Database reads: named queries in `tools/db/` (read-only).
-   - TEFT calls: the runner API (`POST /runner/api/queue`,
-     `GET /runner/api/executions/{id}`) — or Stream A's `teft` command when it lands.
-     Send the shared API key in an `X-Api-Key` header on every call to the runner or to TEFT
-     (ENG-825): without it they answer HTTP 401. Read it at run time with this one command,
-     and never write it into a file, result page or Jira comment:
-
-     ```
-     az keyvault secret show --vault-name kv-noetica-dev-29641d05 --name teft-api-key --query value -o tsv
-     ```
+   - TEFT calls: only through the `teft` skill (`.claude/skills/teft/SKILL.md`). It places the
+     call, returns its verdict and checks, reads the API key at run time (ENG-825), and refuses
+     any tenant that isn't on its test-tenant allowlist. Don't call the runner API directly: that
+     path has no allowlist. If `teft` isn't installed, install it as the skill says, or report the
+     TEFT checks as blocked.
    - Each step captures a trace and screenshot via `PageObservation.RunAsync`.
      Video recording is not yet wired into the harness (see
      `tools/fix-escalation-gap.md` Part A).
