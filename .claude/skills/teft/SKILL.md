@@ -32,7 +32,9 @@ machine, DTMF and so on. `teft` drives both and gives every call a verdict (ENG-
    ```
 
 3. `dotnet tool install --global NubAutoTeftRunner.Cli`. Later: `dotnet tool update --global NubAutoTeftRunner.Cli`.
-4. `%APPDATA%\teft\config.json` (`~/.config/teft/config.json` elsewhere). No key goes in it:
+4. Create the config file in the platform's application-data folder: `%APPDATA%\teft\config.json`
+   on Windows, `~/.config/teft/config.json` on Linux (`$XDG_CONFIG_HOME/teft/config.json` when set),
+   or `~/Library/Application Support/teft/config.json` on macOS. No key goes in it:
 
    ```json
    { "runnerUrl": "https://telephony-testing.dev.noeticacloud.com/runner", "allowedTenants": ["fabrikam"] }
