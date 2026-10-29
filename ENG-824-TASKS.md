@@ -11,10 +11,11 @@ spec approval, then implementation.
    selected Light local review, commit and push the validated fixes, then reply to and
    resolve only the feedback covered by this round after checking the PR head. Do not
    merge without the required reviews, checks, and explicit human confirmation.
-2. **Complete the ENG-824 spec grill.** Verify OQ-3 against the canonical database
-   schema and owning application code: IDs, joins, complete attempt history, state and
-   recycle semantics, and outcome mapping. Resolve Kim's reserved resources and agreed
-   expected values. Record any remaining questions rather than guessing.
+2. **Complete the ENG-824 spec grill.** Preserve the completed schema and owning-code
+   research: IDs, joins, attempt-history shape, state/recycle semantics, and outcome
+   mapping. Keep Kim's reserved resources and agreed expected values open until confirmed.
+   Treat Contoso identity/connection validation as post-deployment work, not a pre-merge
+   access prerequisite. Record remaining questions rather than guessing.
 3. **Publish the agreed spec and grill record.** Update `nub_specs` directly on `main`
    under its documentation-only policy, obtain and record final scope approval, and
    capture the published revision. Keep the spec status accurate.
@@ -50,9 +51,12 @@ spec approval, then implementation.
 
 ## Current position
 
-- Task 1 is in progress: fixes and reproducible evidence are prepared locally for PR
-  #2 at base head `16072edc7ce93e0c5ac7c89da68540f5a64eb389`; the selected Light review
-  is the next action. Nothing from this feedback batch has been committed or pushed.
+- For Task 1, PR #2 contains the prior feedback fixes and supporting evidence. Use the
+  live PR state to decide any further reply or resolution; this handover is not approval
+  to merge.
 - Tasks 2–11 are pending. Contoso-first and Fabrikam-final, the four read-only tools,
-  and the current scope exclusions are settled; database mappings, final spec approval,
-  and Kim's campaign details remain open prerequisites.
+  and the current scope exclusions are settled. Schema/owning-code research is recorded;
+  final spec approval and Kim's campaign details remain open. Verify Contoso's deployed
+  identity and connection after CI deployment; this is not a pre-merge blocker. The
+  documented Fabrikam source is available, with live retrieval/SQL connectivity still
+  to be validated in its intended execution context.

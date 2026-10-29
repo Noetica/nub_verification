@@ -53,14 +53,19 @@ $results += [PSCustomObject]@{ Check='Build identity'; Result='BLOCKED'; Detail=
 # 3. Secrets present in Key Vault
 foreach ($secretName in @("zautotest-$Persona-password", "zautotest-$Persona-totp")) {
   try {
-    $secret = az keyvault secret show --vault-name $kvName --name $secretName --query value -o tsv 2>$null
-    if ($secret) {
+    $secretResult = az keyvault secret show --vault-name $kvName --name $secretName --query id -o tsv 2>&1
+    $azExitCode = $LASTEXITCODE
+    $azError = ($secretResult | ForEach-Object { $_.ToString() }) -join ' '
+
+    if ($azExitCode -eq 0 -and -not [string]::IsNullOrWhiteSpace(($secretResult -join ''))) {
       $results += [PSCustomObject]@{ Check="Secret: $secretName"; Result='PASS'; Detail='Present in Key Vault' }
-    } else {
+    } elseif ($azError -match '(?i)(SecretNotFound|secret.{0,40}not found)') {
       $results += [PSCustomObject]@{ Check="Secret: $secretName"; Result='FAIL'; Detail='Not found in Key Vault' }
+    } else {
+      $results += [PSCustomObject]@{ Check="Secret: $secretName"; Result='BLOCKED'; Detail='Azure CLI could not verify the Key Vault secret; check identity, permissions and connectivity' }
     }
   } catch {
-    $results += [PSCustomObject]@{ Check="Secret: $secretName"; Result='BLOCKED'; Detail=$_.Exception.Message }
+    $results += [PSCustomObject]@{ Check="Secret: $secretName"; Result='BLOCKED'; Detail='Azure CLI could not verify the Key Vault secret; check identity, permissions and connectivity' }
   }
 }
 
