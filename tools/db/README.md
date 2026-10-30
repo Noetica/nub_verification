@@ -16,11 +16,13 @@ Returns the records in a given campaign list, with their intended outcomes.
 ```
 
 ### `record-history.ps1`
-Returns the attempt history for a single record: every call, its outcome code,
-and its timestamp.
+Returns each record's current queue row (state, times called, retry time) and its
+call history (every call, its result and its time), from `Phoenix_Queue` and
+`Phoenix_Statistics`. Written for J2 on the `ianh` dev tenant (ENG-826); give it
+that tenant's read-only connection string.
 
 ```pwsh
-<parameter>-RecordId</parameter>
+pwsh tools/db/record-history.ps1 -ConnectionString $cs -QueueId 1201,1202
 ```
 
 ### `record-final-state.ps1`
@@ -54,7 +56,7 @@ $cs = az keyvault secret show --vault-name kv-noetica-dev-uksouth `
 | Query | Schema entities (confidence) | Source |
 |-------|------------------------------|--------|
 | campaign-records | `campaign_lists`, `dial_records` (high) | nub_documents/database/schema-reference.md §4.2 |
-| record-history | `call_attempts`, `attempt_history` (high) | same §4.3 |
+| record-history | `Phoenix_Queue` (high), `Phoenix_Statistics` (high); `Phoenix_Statistics.QueueID` → `Phoenix_Queue.ID` (name_inferred) | `dbo.Phoenix_Queue`, `dbo.Phoenix_Statistics` |
 | record-final-state | `dial_records`, `recycle_rules` (medium) | same §4.4 |
 | outcome-codes | `outcome_codes` (high) | same §5.1 |
 

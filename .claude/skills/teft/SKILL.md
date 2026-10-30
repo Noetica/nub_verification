@@ -102,6 +102,35 @@ For a dialler list rather than one call, `teft number <outcome> --param <n> --se
 number a test record should dial to get that outcome. It needs the number plan switched on for that
 TEFT host; when it's off, `teft number` says so.
 
+## A simulated agent
+
+When a journey says "log one simulated agent into the campaign" (ENG-826), start one agent that
+stays ready while the dialler places the journey's calls:
+
+```powershell
+teft agent start ianh --campaign "<the journey's campaign>" --number <record 1's number> --number <record 2's number> --json
+```
+
+- It prints the session's execution ID. The agent logs in and sets ready. It takes each call the
+  dialler connects, stays on for 5 seconds, hangs up and wraps the call up as "Completed".
+- `--number` names each test record's number, from `teft number`. When the session ends, the
+  runner reads TEFT's call log for each one.
+- The login takes no campaign: the tenant's set-up puts the agent user in it. `--campaign` is
+  recorded in the evidence.
+- Stop it when the journey's records are done: `teft agent stop <executionId>`. With no stop, it
+  logs out after `--cap` seconds (600 by default).
+- Read it with `teft result <executionId> --json`. `agentSession.endedBy` is `Stopped` or
+  `TimeCap`. `agentSession.calls` lists each call the agent took and whether it was wrapped up.
+  `agentSession.recordLogs` holds TEFT's call log for each number. A record whose log is empty,
+  or which never reached a final state before `TimeCap`, is **blocked**, not failed. A record
+  log with `teftUnreachable` is blocked too.
+- The session takes the tenant's turn on the runner: no other `teft run` for that tenant starts
+  until it ends.
+
+Plan numbers can be queued through the Queue API unchanged. It stores them as `+44…`, and TEFT
+matches that form too. J2 runs on Ian's `ianh` dev tenant: add `ianh` to `allowedTenants` in the
+`teft` config only when Ian asks.
+
 ## Reading the result
 
 | Verdict | Meaning | What to do |
