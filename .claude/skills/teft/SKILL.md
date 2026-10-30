@@ -105,7 +105,11 @@ TEFT host; when it's off, `teft number` says so.
 ## A simulated agent
 
 When a journey says "log one simulated agent into the campaign" (ENG-826), start one agent that
-stays ready while the dialler places the journey's calls:
+stays ready while the dialler places the journey's calls.
+
+J2 runs against Ian's own runner on vm-iantest, never the shared telephony-testing runner in the
+config example above. Set `TEFT_RUNNER_URL` to Ian's runner for the session; ask Ian for its
+address if it isn't in your config.
 
 ```powershell
 teft agent start ianh --campaign "<the journey's campaign>" --number <record 1's number> --number <record 2's number> --json

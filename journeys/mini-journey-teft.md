@@ -20,7 +20,9 @@ in the state the campaign's rules say it should.
 - **Tenant:** Ian's dev tenant `ianh` on DEV-IANH, with its dialler, Kamailio and Ian's own TEFT
   and runner. Never the shared telephony-testing VM, and never a production tenant.
 - **Campaign:** the journey's test campaign on `ianh`. The simulated agent's user is a member of
-  it, and the campaign has an active call result called "Completed". The dialler is running.
+  it, and the campaign has an active call result called "Completed". The campaign sends its
+  calls to TEFT (Ian sets this up). The dialler is running.
+- **Runner:** Ian's own TEFT runner, not the shared one.
 - **Records:** five, each on the journey's own list:
   1. a customer who answers in person after a short ring
   2. a customer who's busy
