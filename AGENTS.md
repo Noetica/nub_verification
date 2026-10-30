@@ -148,5 +148,5 @@ For TEFT test calls, use the teft skill (`.claude/skills/teft/SKILL.md`). It cov
 machine, DTMF and so on), and reports its verdict and checks. Test tenants only. For example:
 
 ```bash
-claude -p "Place a busy TEFT call on fabrikam and report the verdict" --max-turns 15
+claude -p "Place a busy TEFT call on fabrikam and report the verdict" --allowedTools "Bash,Read" --max-turns 15
 ```
