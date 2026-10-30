@@ -14,19 +14,27 @@
 
 .PARAMETER QueueId
     One or more Phoenix_Queue IDs: the IDs the Queue API returned when the records were queued.
+    Comma-separated text works too, so `pwsh -File` (which passes 1201,1202 as one string) reads
+    two IDs rather than 12011202.
 
 .EXAMPLE
-    pwsh tools/db/record-history.ps1 -ConnectionString $cs -QueueId 1201,1202
+    ./tools/db/record-history.ps1 -ConnectionString $cs -QueueId 1201,1202
 #>
 param(
     [Parameter(Mandatory)] [string] $ConnectionString,
-    [Parameter(Mandatory)] [int[]] $QueueId
+    [Parameter(Mandatory)] [string[]] $QueueId
 )
 
 $ErrorActionPreference = 'Stop'
 
-# The IDs are ints, so joining them cannot inject SQL.
-$ids = ($QueueId | ForEach-Object { [int]$_ }) -join ','
+# Each ID must parse as a whole number, so joining them cannot inject SQL.
+$ids = ($QueueId -split ',' | ForEach-Object {
+        $id = 0
+        if (-not [int]::TryParse($_.Trim(), [Globalization.NumberStyles]::None, [Globalization.CultureInfo]::InvariantCulture, [ref]$id)) {
+            throw "QueueId '$_' is not a whole number."
+        }
+        $id
+    }) -join ','
 
 $query = @"
 SELECT 'queue' AS Source, q.ID AS QueueID, q.OBCampaign_ID, q.State, q.Times_Called, q.Retry_Time,

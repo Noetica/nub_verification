@@ -22,7 +22,7 @@ call history (every call, its result and its time), from `Phoenix_Queue` and
 that tenant's read-only connection string.
 
 ```pwsh
-pwsh tools/db/record-history.ps1 -ConnectionString $cs -QueueId 1201,1202
+./tools/db/record-history.ps1 -ConnectionString $cs -QueueId 1201,1202
 ```
 
 ### `record-final-state.ps1`
