@@ -142,3 +142,15 @@ claude -p "Run the maintenance pass on the Report Manager maps" --max-turns 30
 
 The scenario skill (`.claude/skills/scenario/SKILL.md`) is how Claude reads the card's
 "How to verify" section, finds the journeys and feature maps it touches, and runs them.
+
+For TEFT test calls, use the teft skill (`.claude/skills/teft/SKILL.md`). It covers the one-time
+`teft` install, places a call as the customer outcome you choose (busy, no answer, an answering
+machine, DTMF and so on), and reports its verdict and checks. Test tenants only.
+
+Do the skill's one-time set-up in an interactive session first, and sign in with `az login`: the
+install asks for a GitHub token at a hidden prompt, which a `claude -p` run can't answer. After
+that, for example:
+
+```bash
+claude -p "Place a busy TEFT call on fabrikam and report the verdict and execution ID" --allowedTools "Bash,Read" --max-turns 15
+```
