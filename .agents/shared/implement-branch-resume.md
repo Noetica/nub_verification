@@ -1,0 +1,10 @@
+# Resolve an existing implementation branch
+
+Read from `implement` step 5 before deciding whether a branch exists. Return the selected branch, or **no matching branch** so the caller can create one; an ambiguous or dirty state waits for the developer.
+
+The `<KEY>` may already have a branch from an earlier (possibly crashed) run — this is the resume-after-crash path, so **never assume the branch doesn't exist**. Resolve in this order:
+
+1. **Already on it** — if `git branch --show-current` matches `<type>/<KEY>-*`: before returning to the caller, run the same pre-flight as the next case — if `git status --short` shows anything, show it and confirm with the user (offer to stash) before any work. A dirty tree at run start is the one thing the delivery authorization must never sweep into a checkpoint commit.
+2. **Exists but not checked out** — check local and remote for a branch for this key: `git branch --list '*<KEY>-*'` and `git ls-remote --heads origin '*<KEY>-*'`. Take the **union of branch *names*** across both — a normal pushed branch appears in both local and remote, and that is *one* branch, not two. If exactly one distinct name results, **first confirm the working tree is clean**: `git switch` carries non-conflicting uncommitted changes across with it, so unrelated edits from the branch you're on would silently contaminate the card branch. If `git status --short` shows anything, show it and confirm with the user (offer to stash) before switching — same pre-flight `branch-from-jira` does on create. Then `git fetch` and `git switch` to it and continue — **do not re-create it**. (Chaining `branch-from-jira` here would fail: its `git switch -c … --no-track origin/main` is not idempotent — it errors on an existing branch, and if the slug is regenerated slightly differently it silently forks a second orphan branch for the same card.) If two or more *distinct* names result, stop and ask which to use — a prior run has likely already forked duplicates.
+
+If neither the current branch nor the local/remote search matches, return **no matching branch**. After a successful selection, return to `implement` step 5 for Jira bookkeeping.

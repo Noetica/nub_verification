@@ -1,0 +1,26 @@
+{
+  "sonnet": {
+    "model": "claude-sonnet-5-5",
+    "effort": "high"
+  },
+  "luna": {
+    "model": "gpt-6-luna",
+    "effort": "high"
+  },
+  "composer": {
+    "model": "composer-2.5",
+    "effort": "provider-default"
+  },
+  "opus": {
+    "model": "claude-opus-5-5",
+    "effort": "high"
+  },
+  "sol": {
+    "model": "gpt-6.1-sol",
+    "effort": "high"
+  },
+  "grok": {
+    "model": "grok-4.7-high-fast",
+    "effort": "encoded-in-model"
+  }
+}

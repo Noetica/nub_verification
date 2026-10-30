@@ -1,0 +1,11 @@
+# Claude Code personal overrides (project-level settings.json is shared and committed)
+.claude/settings.local.json
+
+# /implement working plan files (untracked cross-session state)
+plans/*-implementation-plan.md
+
+# review-triage ledgers (per-branch agent scratch; durable tracking lives in Jira)
+.claude/review-ledger-*.md
+
+# Python bytecode (local review runtime)
+__pycache__/
