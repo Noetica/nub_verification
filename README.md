@@ -22,7 +22,8 @@ maps/
   user-management/                  # (future — Angular upgrade target)
 journeys/
   campaign-lifecycle.md             # J1: the first journey
-  ...                               # (J2-J9 to follow)
+  mini-journey-teft.md              # J2: Queue API records, one simulated agent, TEFT (ENG-826)
+  ...                               # (J3-J9 to follow)
 tools/
   doctor/                           # Is-Fabrikam-worth-testing checks
   db/                               # Named read-only query scripts

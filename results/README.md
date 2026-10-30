@@ -97,3 +97,9 @@ results/
 - Fail or blocked results are pinned — they stay visible at the top of the page.
 - The cleanup status is reported separately from the checks, so evidence survives
   teardown.
+- A journey with a control record (J2 has one) expects the control's checks to fail. If
+  they pass, the proposed verdict is `INVALID RUN`, whatever the other checks say.
+- A journey with records gives each record its own row, linking that record's call
+  log (TEFT) and its attempt history (database), e.g. `evidence/record-2-teft-log.json`
+  and `evidence/record-2-history.csv`. The agent session's report is
+  `evidence/agent-session.json`.
