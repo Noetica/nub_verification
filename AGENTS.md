@@ -154,3 +154,9 @@ that, for example:
 ```bash
 claude -p "Place a busy TEFT call on fabrikam and report the verdict and execution ID" --allowedTools "Bash,Read" --max-turns 15
 ```
+
+## Skills
+
+`scenario`, `teft` and `maintain-verification-maps` are this repo's own skills: their workflow
+bodies live in `.claude/skills/<name>/SKILL.md`, not in `.agents/`. Every other skill is synced
+from `nub_model_repository`, and `CLAUDE.md`'s adapter description applies only to those.
