@@ -116,7 +116,9 @@ teft agent start ianh --campaign "<the journey's campaign>" --number <record 1's
 ```
 
 - It prints the session's execution ID. The agent logs in and sets ready. It takes each call the
-  dialler connects, stays on for 5 seconds, hangs up and wraps the call up as "Completed".
+  dialler connects, stays on for 5 seconds, hangs up and wraps the call up with the campaign's
+  "Completed" call result. A campaign without one gets the call hung up but not wrapped up, and
+  the call's `error` says so.
 - `--number` names each test record's number, from `teft number`. When the session ends, the
   runner reads TEFT's call log for each one.
 - The login takes no campaign: the tenant's set-up puts the agent user in it. `--campaign` is
@@ -125,9 +127,10 @@ teft agent start ianh --campaign "<the journey's campaign>" --number <record 1's
   logs out after `--cap` seconds (600 by default).
 - Read it with `teft result <executionId> --json`. `agentSession.endedBy` is `Stopped` or
   `TimeCap`. `agentSession.calls` lists each call the agent took and whether it was wrapped up.
-  `agentSession.recordLogs` holds TEFT's call log for each number. A record whose log is empty,
-  or which never reached a final state before `TimeCap`, is **blocked**, not failed. A record
-  log with `teftUnreachable` is blocked too.
+  `agentSession.recordLogs` holds TEFT's call log for each number. When a record's log is empty
+  or has `teftUnreachable`, that record's TEFT checks are **blocked**, not failed; its database
+  checks still run. After `TimeCap`, the checks of a record that hadn't reached a final state are
+  blocked.
 - The session takes the tenant's turn on the runner: no other `teft run` for that tenant starts
   until it ends.
 

@@ -42,5 +42,5 @@ ORDER BY QueueID, Source, EventTime;
 "@
 
 Write-Output '-- record-history'
-Invoke-Sqlcmd -ConnectionString $ConnectionString -Query $query -ApplicationIntent ReadOnly |
+Invoke-Sqlcmd -ConnectionString $ConnectionString -Query $query |
     ConvertTo-Csv -NoTypeInformation

@@ -66,7 +66,7 @@ returns. Ian fills these in before the first run; Kim or Sandra check them at th
 - Only record 1 reached the agent, and the agent wrapped it up as completed (the agent's session).
 - Each record's call behaved as its customer says (TEFT's call log for its number).
 - Each record's history shows the expected outcome and final state (the record's history).
-- Record 5's check fails. If it passes, the result page says the run is not valid.
+- Record 5's checks fail. If they pass, the result page says the run is not valid.
 - If TEFT is down, its checks are blocked, never passed.
 
 ## Evidence to keep
