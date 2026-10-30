@@ -145,8 +145,12 @@ The scenario skill (`.claude/skills/scenario/SKILL.md`) is how Claude reads the 
 
 For TEFT test calls, use the teft skill (`.claude/skills/teft/SKILL.md`). It covers the one-time
 `teft` install, places a call as the customer outcome you choose (busy, no answer, an answering
-machine, DTMF and so on), and reports its verdict and checks. Test tenants only. For example:
+machine, DTMF and so on), and reports its verdict and checks. Test tenants only.
+
+Do the skill's one-time set-up in an interactive session first, and sign in with `az login`: the
+install asks for a GitHub token at a hidden prompt, which a `claude -p` run can't answer. After
+that, for example:
 
 ```bash
-claude -p "Place a busy TEFT call on fabrikam and report the verdict" --allowedTools "Bash,Read" --max-turns 15
+claude -p "Place a busy TEFT call on fabrikam and report the verdict and execution ID" --allowedTools "Bash,Read" --max-turns 15
 ```
