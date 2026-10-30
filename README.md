@@ -48,7 +48,9 @@ CODEOWNERS                        # Kim and Sandra for maps/ and journeys/
 - Expected values are written before the run, from product rules, never from the system.
 - One deliberately failing case per journey.
 - Agents never edit product code, never change expected values to make a result pass,
-  never move a Jira card. Humans keep the verdict.
+  and never move a Jira card as a verification verdict (into or out of Verification, or to
+  Done). Humans keep the verdict. The development skills' moves to In Progress and Peer
+  Review are allowed.
 
 ## Related
 
